@@ -1,28 +1,44 @@
-'use server';
+'use server'
 
-import {z} from "zod";
-import {validatedAction} from "@/lib/auth/middleware";
-import { redirect } from 'next/navigation';
-import {db} from "@/lib/db/drizzle";
-import {events} from "@/lib/db/schema";
-
-const dateSchema = z.preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-}, z.date());
+import { z } from 'zod'
+import { validatedActionWithUser } from '@/lib/auth/middleware'
+import { db } from '@/lib/db/drizzle'
+import { Event, events, user_events, UserEvent } from '@/lib/db/schema'
 
 const newEventSchema = z.object({
     title: z.string().min(3).max(255),
-    date: dateSchema,
-});
+    date: z.string(),
+})
 
-export const addEvent = validatedAction(newEventSchema, async (data, formData) => {
-    const { title, date } = data;
+export const addEvent = validatedActionWithUser(
+    newEventSchema,
+    async (data, _, user) => {
+        const { title, date } = data
 
-    // Create a new event
-    await db.insert(events).values({
-        name: title,
-        date: date
-    });
+        try {
+            // Create a new event
+            const [event]: Event[] = await db
+                .insert(events)
+                .values({
+                    name: title,
+                    date: new Date(date),
+                })
+                .returning()
 
-    redirect('/dashboard');
-});
+            await db
+                .insert(user_events)
+                .values({
+                    user_id: user.id,
+                    event_id: event.id,
+                })
+                .returning()
+
+            return {
+                success: 'New event added successfully',
+                event,
+            }
+        } catch (error) {
+            return { error: 'Failed to add new event' }
+        }
+    }
+)
