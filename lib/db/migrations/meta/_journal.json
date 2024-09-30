@@ -15,6 +15,13 @@
       "when": 1727640978732,
       "tag": "0001_bitter_sir_ram",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727708012305,
+      "tag": "0002_puzzling_cerise",
+      "breakpoints": true
     }
   ]
 }

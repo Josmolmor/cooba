@@ -1,15 +1,20 @@
 'use client'
 
 import { createContext, ReactNode, useContext, useState } from 'react'
+import { Expense } from '@/lib/db/schema'
 
-type ModalVariant = 'new_event' | 'new_expense'
+type ModalVariant = 'new_event' | 'edit_event' | 'new_expense' | 'edit_expense'
 
 type ModalContextType = {
     isOpen: boolean
     modalVariant: ModalVariant
-    openModal: (variant: ModalVariant) => void
+    openModal: (
+        variant: ModalVariant,
+        payload?: Pick<Expense, 'id' | 'description' | 'amount' | 'currency'>
+    ) => void
     closeModal: () => void
     toggleModal: () => void
+    payload: Pick<Expense, 'id' | 'description' | 'amount' | 'currency'> | null
 }
 
 const ModalContext = createContext<ModalContextType>({
@@ -18,6 +23,7 @@ const ModalContext = createContext<ModalContextType>({
     openModal: () => {},
     closeModal: () => {},
     toggleModal: () => {},
+    payload: null,
 })
 
 export const useModal = (): ModalContextType => {
@@ -31,8 +37,13 @@ export const useModal = (): ModalContextType => {
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [modalVariant, setModalVariant] = useState<ModalVariant>('new_event')
+    const [payload, setPayload] =
+        useState<Pick<Expense, 'id' | 'description' | 'amount' | 'currency'>>(
+            null
+        )
 
-    const openModal = (variant = 'new_event' as ModalVariant) => {
+    const openModal = (variant = 'new_event' as ModalVariant, payload) => {
+        setPayload(payload)
         setModalVariant(variant)
         setIsOpen(true)
     }
@@ -47,7 +58,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ModalContext.Provider
-            value={{ isOpen, toggleModal, modalVariant, openModal, closeModal }}
+            value={{
+                isOpen,
+                toggleModal,
+                modalVariant,
+                openModal,
+                closeModal,
+                payload,
+            }}
         >
             {children}
         </ModalContext.Provider>

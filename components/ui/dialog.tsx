@@ -40,7 +40,7 @@ const DialogContent = React.forwardRef<
             className={cn(
                 'fixed z-50 bottom-0 bg-background p-6 min-h-[33dvh] w-[100dvw] rounded-t-lg ' +
                     'sm:min-h-[auto] sm:bottom-auto sm:rounded-lg sm:shadow-lg sm:left-[50%] sm:top-[50%] sm:w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] ' +
-                    'duration-500 animate-in slide-in-from-bottom sm:animate-none',
+                    'duration-350 animate-in slide-in-from-bottom sm:animate-none',
                 className
             )}
             {...props}

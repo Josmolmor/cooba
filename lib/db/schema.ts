@@ -33,6 +33,7 @@ export const expenses = pgTable('expenses', {
     user_id: integer('user_id').references(() => users.id),
     description: text('description').notNull(),
     amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+    currency: text('currency').notNull().default('EUR'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     deletedAt: timestamp('deleted_at'),
