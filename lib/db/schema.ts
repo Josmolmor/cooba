@@ -5,6 +5,7 @@ import {
     text,
     timestamp,
     integer,
+    decimal,
 } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
@@ -31,7 +32,7 @@ export const expenses = pgTable('expenses', {
     event_id: integer('event_id').references(() => events.id),
     user_id: integer('user_id').references(() => users.id),
     description: text('description').notNull(),
-    amount: integer('amount').notNull(),
+    amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     deletedAt: timestamp('deleted_at'),

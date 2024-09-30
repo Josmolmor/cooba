@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-type ModalVariant = 'new_event'
+type ModalVariant = 'new_event' | 'new_expense'
 
 type ModalContextType = {
     isOpen: boolean
@@ -32,14 +32,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [modalVariant, setModalVariant] = useState<ModalVariant>('new_event')
 
-    const openModal = (variant) => {
+    const openModal = (variant = 'new_event' as ModalVariant) => {
         setModalVariant(variant)
         setIsOpen(true)
     }
 
     const closeModal = () => {
         setIsOpen(false)
-        setModalVariant(null)
     }
 
     const toggleModal = () => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
 import { addEvent } from './actions'
-import NewEventForm from '@/app/(dashboard)/events/new-event-form'
+import NewEventForm from '@/app/(dashboard)/dashboard/events/new-event-form'
 import { useModal } from '@/context/modal'
 
 export default function NewEventModalForm() {
@@ -20,7 +20,6 @@ export default function NewEventModalForm() {
     )
 
     useEffect(() => {
-        console.log('=>', state)
         if (state?.success) {
             closeModal()
         }
@@ -30,7 +29,7 @@ export default function NewEventModalForm() {
         <Dialog open={isOpen} onOpenChange={toggleModal}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="mb-4">
-                    <DialogTitle>Add New Event</DialogTitle>
+                    <DialogTitle>Add new event</DialogTitle>
                 </DialogHeader>
                 <NewEventForm
                     className="flex flex-col gap-4"

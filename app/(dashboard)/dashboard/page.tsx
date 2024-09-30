@@ -1,19 +1,19 @@
 import { fetchEvents } from '@/lib/db/queries/events'
 import EmptyState from '@/components/empty-state'
+import Link from 'next/link'
 
 export default async function DashboardPage() {
     const events = await fetchEvents()
-    console.log(events)
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto py-6 px-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 flex flex-col gap-4">
             {events?.length ? (
-                events?.map((event) => {
+                events?.map(({ id, name, date }) => {
                     return (
-                        <div key={event.id}>
-                            <h1>{event.name}</h1>
-                            <p>{new Date(event.date).toISOString()}</p>
-                        </div>
+                        <Link key={id} href={`/dashboard/${id}`}>
+                            <strong>{name}</strong>{' '}
+                            {new Date(date).toISOString()}
+                        </Link>
                     )
                 })
             ) : (

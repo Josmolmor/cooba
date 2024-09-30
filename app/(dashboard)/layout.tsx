@@ -11,23 +11,24 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/lib/auth'
-import { Home, LogOut } from 'lucide-react'
+import { CirclePlus, Home, LogOut } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { ReactNode, useEffect, useState } from 'react'
 import { useModal } from '@/context/modal'
 
 function Header() {
-    const { toggleModal } = useModal()
+    const { openModal } = useModal()
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const { user } = useUser()
 
-    const router = useRouter()
+    const params = useParams()
+    const { push } = useRouter()
 
     async function handleSignOut() {
         await signOut()
-        router.push('/')
+        push('/')
     }
 
     return (
@@ -39,10 +40,11 @@ function Header() {
                         Cooba
                     </span>
                 </Link>
-                <div className="flex items-center space-x-4">
-                    {user ? (
-                        <Button onClick={toggleModal}>Add event</Button>
-                    ) : null}
+                <div
+                    className="flex items-center gap-4
+                    bg-gray-200 py-2 px-2 fixed bottom-6 left-[50%] translate-x-[-50%] rounded-full
+                    sm:bg-transparent sm:relative sm:bottom-auto sm:left-auto sm:translate-x-0"
+                >
                     {user ? (
                         <DropdownMenu
                             open={isMenuOpen}
@@ -90,6 +92,21 @@ function Header() {
                             <Link href="/sign-up">Sign Up</Link>
                         </Button>
                     )}
+                    {user ? (
+                        <Button
+                            variant="link"
+                            onClick={() => {
+                                if (params.id) {
+                                    openModal('new_expense')
+                                } else {
+                                    openModal('new_event')
+                                }
+                            }}
+                            className="p-0"
+                        >
+                            <CirclePlus size={36} />
+                        </Button>
+                    ) : null}
                 </div>
             </div>
         </header>

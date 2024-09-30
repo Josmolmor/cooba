@@ -38,7 +38,7 @@ export const addEvent = validatedActionWithUser(
                 event,
             }
         } catch (error) {
-            return { error: 'Failed to add new event' }
+            return { error: `Failed to add new event: ${error}` }
         }
     }
 )

@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { useModal } from '@/context/modal/index'
-import NewEventModalForm from '@/app/(dashboard)/events/new-event-modal'
+import NewEventModalForm from '@/app/(dashboard)/dashboard/events/new-event-modal'
+import NewExpenseModalForm from '@/app/(dashboard)/dashboard/expenses/new-expense-modal'
 
 const ModalWrapper = () => {
     const { isOpen, openModal, modalVariant, closeModal } = useModal()
@@ -14,6 +15,8 @@ const ModalWrapper = () => {
     switch (modalVariant) {
         case 'new_event':
             return <NewEventModalForm />
+        case 'new_expense':
+            return <NewExpenseModalForm />
         default:
             return null
     }

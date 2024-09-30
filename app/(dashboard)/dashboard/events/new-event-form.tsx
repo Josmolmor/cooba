@@ -18,10 +18,8 @@ export default function NewEventForm({
 }) {
     return (
         <form action={formAction} className={className}>
-            <div className="">
-                <Label htmlFor="event-title" className="text-right">
-                    Title
-                </Label>
+            <div className="space-y-2">
+                <Label htmlFor="title">Title</Label>
                 <Input
                     id="title"
                     name="title"
@@ -31,10 +29,8 @@ export default function NewEventForm({
                     required
                 />
             </div>
-            <div className="">
-                <Label htmlFor="event-date" className="text-right">
-                    Date
-                </Label>
+            <div className="space-y-2">
+                <Label htmlFor="date">Date</Label>
                 <Input
                     id="date"
                     name="date"
