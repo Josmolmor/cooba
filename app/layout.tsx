@@ -31,12 +31,22 @@ export default function RootLayout({
     let userPromise = getUser()
 
     return (
-        <html
-            lang="en"
-            className={`bg-white dark:bg-gray-950 text-black dark:text-white`}
-        >
+        <html lang="en">
+            <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+      if (localStorage.getItem('cooba-theme') === 'dark' || (!('cooba-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    `,
+                    }}
+                />
+            </head>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-[100dvh] bg-gray-50`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-[100dvh]`}
             >
                 <ModalProvider>
                     <UserProvider userPromise={userPromise}>

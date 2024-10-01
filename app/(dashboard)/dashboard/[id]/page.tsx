@@ -41,20 +41,20 @@ export default async function EventPage({
         <div className="max-w-7xl w-full mx-auto py-6 px-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 flex flex-col gap-4">
             <Link
                 href="/dashboard"
-                className="inline-flex items-center justify-center self-start whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 self-start"
             >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Events
             </Link>
 
-            <Card className="mb-4 bg-primary text-primary-foreground">
-                <CardHeader>
+            <Card className="mb-4">
+                <CardHeader className="pb-6">
                     <div className="flex justify-between items-start flex-wrap gap-8">
                         <div className="flex flex-col gap-2">
                             <CardTitle className="text-2xl">
                                 {event.name}
                             </CardTitle>
-                            <div className="text-primary-foreground/80 text-sm flex items-center">
+                            <div className="text-sm flex items-center">
                                 <CalendarDays className="mr-1 h-4 w-4" />
                                 {new Date(event.date).toLocaleDateString()}
                             </div>

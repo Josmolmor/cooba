@@ -21,7 +21,7 @@ export default async function DashboardPage() {
                 {events?.length ? (
                     events?.map(({ id, name, date }) => (
                         <Card key={id}>
-                            <CardHeader className="">
+                            <CardHeader className="pb-4">
                                 <CardTitle>{name}</CardTitle>
                                 <CardDescription>
                                     <span className="flex items-center">
@@ -31,14 +31,14 @@ export default async function DashboardPage() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="flex gap-4 flex-wrap">
-                                <Button className="flex-grow sm:flex-grow-0">
-                                    Invite
+                                <Button className="sm:w-auto">
+                                    Copy invite link
                                     <UserPlus2 className="ml-2" size={14} />
                                 </Button>
                                 <Link
                                     href={`/dashboard/${id}`}
                                     key={id}
-                                    className="flex flex-grow sm:flex-grow-0 flex-shrink-0 items-center justify-center text-sm"
+                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 self-start w-full sm:w-auto"
                                 >
                                     View Details
                                     <ChevronRight className="ml-1 h-4 w-4" />

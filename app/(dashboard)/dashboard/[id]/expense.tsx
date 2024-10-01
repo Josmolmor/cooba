@@ -20,20 +20,29 @@ import {
     User,
 } from 'lucide-react'
 import { useModal } from '@/context/modal'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 
 const categoryIcons = {
-    general: DollarSign,
+    general: Banknote,
     shopping: ShoppingCart,
     travel: Plane,
     food: Coffee,
 }
 
 const categoryColors = {
-    general: 'bg-purple-100 text-purple-600',
-    shopping: 'bg-green-100 text-green-600',
-    travel: 'bg-blue-100 text-blue-600',
-    food: 'bg-orange-100 text-orange-600',
+    general:
+        'bg-purple-100 text-purple-600 dark:bg-purple-800 dark:text-purple-300',
+    shopping:
+        'bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-300',
+    travel: 'bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-300',
+    food: 'bg-orange-100 text-orange-600 dark:bg-orange-800 dark:text-orange-300',
 }
 
 export default function Expense({
@@ -48,46 +57,46 @@ export default function Expense({
         openModal('edit_expense', { id, description, amount, currency })
     }
 
-    const category = 'shopping'
+    const category = 'general'
 
     const Icon = categoryIcons[category] || CreditCard
-    const colorClass = categoryColors[category] || 'bg-gray-100 text-gray-600'
+    const colorClass =
+        categoryColors[category] ||
+        'bg-foreground text-background dark:bg-foreground dark:text-background'
 
     return (
-        <Card className="overflow-hidden border-none shadow-md">
-            <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-3">
+        <Card className="">
+            <CardHeader>
+                <div class="flex justify-between items-center">
+                    <CardTitle>
+                        <h3 className="text-2xl font-bold flex gap-1 items-baseline">
+                            {(+amount).toFixed(2)}
+                            <span className="text-sm">{currency}</span>
+                        </h3>
+                    </CardTitle>
                     <div className={`p-2 rounded-full ${colorClass}`}>
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-6 h-6" />
                     </div>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleClick}
-                        className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 px-2"
-                    >
-                        <Edit className="h-4 w-4" />
-                    </Button>
                 </div>
-                <div className="space-y-2">
-                    <h3 className="font-medium text-base truncate text-gray-600">
-                        {description}
-                    </h3>
-                    <div className="flex items-baseline justify-between">
-                        <div className="space-x-1">
-                            <span className="text-2xl font-bold text-gray-800">
-                                {(+amount).toFixed(2)}
-                            </span>
-                            <span className="text-sm text-gray-500">
-                                {currency}
-                            </span>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500">
+            </CardHeader>
+            <CardContent className="">
+                <CardDescription>
+                    {description}
+                    <div className="flex justify-between items-baseline">
+                        <div className="flex items-center text-sm">
                             <User className="h-3 w-3 mr-1" />
                             <span>You</span>
                         </div>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={handleClick}
+                            className="px-2"
+                        >
+                            <Edit className="h-4 w-4" />
+                        </Button>
                     </div>
-                </div>
+                </CardDescription>
             </CardContent>
         </Card>
     )
