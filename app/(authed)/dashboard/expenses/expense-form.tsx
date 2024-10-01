@@ -25,6 +25,17 @@ export default function ExpenseForm({
     return (
         <form action={formAction} className={className}>
             <div className="space-y-2">
+                <Label htmlFor="amount">Amount</Label>
+                <Input
+                    id="amount"
+                    name="amount"
+                    type="number"
+                    step="0.01"
+                    defaultValue={state.payload?.amount ?? ''}
+                    required
+                />
+            </div>
+            <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                     className="max-h-[20dvh]"
@@ -35,40 +46,27 @@ export default function ExpenseForm({
                     required
                 />
             </div>
-            <div className="flex items-center gap-4 flex-wrap">
-                <div className="space-y-2 max-w-full">
-                    <Label htmlFor="currency">Currency</Label>
-                    <select
-                        name="currency"
-                        id="currency"
-                        defaultValue={state.payload?.currency ?? 'EUR'}
-                        className="appearance-none flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {currencyList.map(({ name, short, symbol }) => (
-                            <option key={short} value={short}>
-                                {name} ({symbol})
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="space-y-2 flex-1">
-                    <Label htmlFor="amount">Amount</Label>
-                    <Input
-                        id="amount"
-                        name="amount"
-                        type="number"
-                        step="0.01"
-                        defaultValue={state.payload?.amount ?? ''}
-                        required
-                    />
-                </div>
-            </div>
             <Input
                 type="hidden"
                 id="id"
                 name="id"
                 defaultValue={state.payload?.id ?? ''}
             />
+            <div className="space-y-2 max-w-full">
+                <Label htmlFor="currency">Currency</Label>
+                <select
+                    name="currency"
+                    id="currency"
+                    defaultValue={state.payload?.currency ?? 'EUR'}
+                    className="appearance-none flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                    {currencyList.map(({ name, short, symbol }) => (
+                        <option key={short} value={short}>
+                            {name} ({symbol})
+                        </option>
+                    ))}
+                </select>
+            </div>
             <Input
                 type="hidden"
                 id="event_id"

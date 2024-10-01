@@ -51,10 +51,15 @@ export default function Expense({
     amount,
     currency,
 }: Pick<Expense, 'id' | 'description' | 'amount' | 'currency'>) {
-    const { isOpen, openModal, modalVariant, closeModal } = useModal()
+    const { openModal } = useModal()
 
-    const handleClick = () => {
-        openModal('edit_expense', { id, description, amount, currency })
+    const handleClickEditButton = () => {
+        openModal('edit_expense', undefined, {
+            id,
+            description,
+            amount,
+            currency,
+        })
     }
 
     const category = 'general'
@@ -67,12 +72,10 @@ export default function Expense({
     return (
         <Card className="">
             <CardHeader>
-                <div class="flex justify-between items-center">
-                    <CardTitle>
-                        <h3 className="text-2xl font-bold flex gap-1 items-baseline">
-                            {(+amount).toFixed(2)}
-                            <span className="text-sm">{currency}</span>
-                        </h3>
+                <div className="flex justify-between items-center">
+                    <CardTitle className="text-2xl font-bold flex gap-1 items-baseline">
+                        {(+amount).toFixed(2)}
+                        <span className="text-sm">{currency}</span>
                     </CardTitle>
                     <div className={`p-2 rounded-full ${colorClass}`}>
                         <Icon className="w-6 h-6" />
@@ -90,7 +93,7 @@ export default function Expense({
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={handleClick}
+                            onClick={handleClickEditButton}
                             className="px-2"
                         >
                             <Edit className="h-4 w-4" />

@@ -8,18 +8,14 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
-import { useModal } from '@/context/modal'
-import ExpenseForm from '@/app/(dashboard)/dashboard/expenses/expense-form'
+import { ExpensePayload, useModal } from '@/context/modal'
+import ExpenseForm from '@/app/(authed)/dashboard/expenses/expense-form'
 import { addExpense, editExpense } from './actions'
-import { Expense } from '@/lib/db/schema'
 
 export default function ExpenseModalForm({
-    initialState,
+    initialState = null,
 }: {
-    initialState: Pick<
-        Expense,
-        'id' | 'description' | 'amount' | 'currency'
-    > | null
+    initialState: ExpensePayload
 }) {
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
@@ -38,7 +34,7 @@ export default function ExpenseModalForm({
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="mb-4">
                     <DialogTitle>
-                        {initialState ? 'Edit' : 'Add'} new expense
+                        {initialState ? 'Edit' : 'Add new'} expense
                     </DialogTitle>
                 </DialogHeader>
                 <ExpenseForm

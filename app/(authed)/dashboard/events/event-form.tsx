@@ -4,8 +4,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
+import { useParams } from 'next/navigation'
 
-export default function NewEventForm({
+export default function EventForm({
     formAction,
     state,
     pending,
@@ -16,6 +17,8 @@ export default function NewEventForm({
     pending: boolean
     className?: string
 }) {
+    const params = useParams()
+
     return (
         <form action={formAction} className={className}>
             <div className="space-y-2">
@@ -27,6 +30,7 @@ export default function NewEventForm({
                     type="text"
                     placeholder="Event title"
                     required
+                    defaultValue={state.payload?.title ?? ''}
                 />
             </div>
             <div className="space-y-2">
@@ -36,9 +40,10 @@ export default function NewEventForm({
                     name="date"
                     type="datetime-local"
                     required
-                    className=""
+                    defaultValue={state.payload?.date ?? ''}
                 />
             </div>
+            <Input type="hidden" id="id" name="id" defaultValue={params.id} />
             {state?.error && (
                 <p className="text-red-500 text-sm">{state.error}</p>
             )}
@@ -49,7 +54,7 @@ export default function NewEventForm({
                         Loading...
                     </>
                 ) : (
-                    'Add event'
+                    `${state.payload ? 'Edit' : 'Add'} event`
                 )}
             </Button>
         </form>

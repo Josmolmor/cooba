@@ -11,7 +11,7 @@ export async function fetchEvents() {
     return await db
         .select({
             id: events.id,
-            name: events.name,
+            title: events.title,
             date: events.date,
         })
         .from(events)
@@ -28,7 +28,7 @@ export async function fetchEvent(eventId: string) {
     const [event] = await db
         .select({
             id: events.id,
-            name: events.name,
+            title: events.title,
             date: events.date,
         })
         .from(events)

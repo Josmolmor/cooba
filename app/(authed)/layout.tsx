@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/lib/auth'
-import { CirclePlus, Home, LogOut } from 'lucide-react'
+import { CirclePlus, Home, LogOut, UserCog } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
@@ -70,6 +70,15 @@ function Header() {
                                         <span>Dashboard</span>
                                     </Link>
                                 </DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link
+                                        href="/profile"
+                                        className="flex w-full items-center"
+                                    >
+                                        <UserCog className="mr-2 h-4 w-4" />
+                                        <span>Profile</span>
+                                    </Link>
+                                </DropdownMenuItem>
                                 <form action={handleSignOut} className="w-full">
                                     <button
                                         type="submit"
@@ -84,11 +93,7 @@ function Header() {
                             </DropdownMenuContent>
                         </DropdownMenu>
                     ) : (
-                        <Button
-                            asChild
-                            size="sm"
-                            className="px-4 py-2 rounded-full"
-                        >
+                        <Button asChild className="px-4 py-2 rounded-full">
                             <Link href="/sign-up">Sign Up</Link>
                         </Button>
                     )}
@@ -104,7 +109,7 @@ function Header() {
                             }}
                             className="p-0"
                         >
-                            <CirclePlus size={36} />
+                            <CirclePlus size={32} />
                         </Button>
                     ) : null}
                     <DarkModeToggle />

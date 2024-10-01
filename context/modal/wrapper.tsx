@@ -2,21 +2,30 @@
 
 import React from 'react'
 import { useModal } from '@/context/modal/index'
-import NewEventModalForm from '@/app/(dashboard)/dashboard/events/new-event-modal'
-import ExpenseModalForm from '@/app/(dashboard)/dashboard/expenses/expense-modal'
+import ExpenseModalForm from '@/app/(authed)/dashboard/expenses/expense-modal'
+import EventModalForm from '@/app/(authed)/dashboard/events/event-modal'
 
 const ModalWrapper = () => {
-    const { isOpen, openModal, modalVariant, closeModal, payload } = useModal()
+    const {
+        isOpen,
+        openModal,
+        modalVariant,
+        closeModal,
+        eventPayload,
+        expensePayload,
+    } = useModal()
 
     if (!isOpen) return null
 
     switch (modalVariant) {
         case 'new_event':
-            return <NewEventModalForm />
+            return <EventModalForm />
+        case 'edit_event':
+            return <EventModalForm initialState={eventPayload} />
         case 'new_expense':
             return <ExpenseModalForm />
         case 'edit_expense':
-            return <ExpenseModalForm initialState={payload} />
+            return <ExpenseModalForm initialState={expensePayload} />
         default:
             return null
     }

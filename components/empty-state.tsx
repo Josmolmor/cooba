@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { BoxSelect } from 'lucide-react'
+import { BoxSelect, Edit, Plus } from 'lucide-react'
 import { useModal } from '@/context/modal'
 
 export default function EmptyState({
@@ -38,6 +38,7 @@ export default function EmptyState({
                 you need.
             </p>
             <Button className="sm:w-auto" onClick={handleEmptyStateButtonClick}>
+                <Plus className="mr-2 h-4 w-4" />
                 Add {name}
             </Button>
         </div>

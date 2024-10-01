@@ -8,15 +8,20 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
-import { addEvent } from './actions'
-import NewEventForm from '@/app/(dashboard)/dashboard/events/new-event-form'
-import { useModal } from '@/context/modal'
+import { addEvent, editEvent } from './actions'
+import EventForm from '@/app/(authed)/dashboard/events/event-form'
+import { EventPayload, useModal } from '@/context/modal'
 
-export default function NewEventModalForm() {
+export default function EventModalForm({
+    initialState = null,
+}: {
+    initialState: EventPayload
+}) {
+    console.log('initialState =>', initialState)
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
-        addEvent,
-        { error: '' }
+        initialState ? editEvent : addEvent,
+        { payload: initialState, error: '' } ?? { error: '' }
     )
 
     useEffect(() => {
@@ -29,9 +34,11 @@ export default function NewEventModalForm() {
         <Dialog open={isOpen} onOpenChange={toggleModal}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="mb-4">
-                    <DialogTitle>Add new event</DialogTitle>
+                    <DialogTitle>
+                        {initialState ? 'Edit' : 'Add new'} event
+                    </DialogTitle>
                 </DialogHeader>
-                <NewEventForm
+                <EventForm
                     className="flex flex-col gap-4"
                     formAction={formAction}
                     state={state}

@@ -6,6 +6,8 @@ import { getUser } from '@/lib/db/queries/users'
 import { ReactNode } from 'react'
 import { ModalProvider } from '@/context/modal'
 import ModalWrapper from '@/context/modal/wrapper'
+import { LOCAL_STORAGE_KEY } from '@/components/dark-mode-toggle'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -36,24 +38,28 @@ export default function RootLayout({
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
-      if (localStorage.getItem('cooba-theme') === 'dark' || (!('cooba-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    `,
+                if (localStorage.getItem(${LOCAL_STORAGE_KEY}) === 'dark' || (!(${LOCAL_STORAGE_KEY} in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.setProperty('color-scheme', 'dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.removeProperty('color-scheme');
+                }
+              `,
                     }}
                 />
             </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-[100dvh]`}
             >
-                <ModalProvider>
-                    <UserProvider userPromise={userPromise}>
-                        {children}
-                        <ModalWrapper />
-                    </UserProvider>
-                </ModalProvider>
+                <TooltipProvider delayDuration={200}>
+                    <ModalProvider>
+                        <UserProvider userPromise={userPromise}>
+                            {children}
+                            <ModalWrapper />
+                        </UserProvider>
+                    </ModalProvider>
+                </TooltipProvider>
             </body>
         </html>
     )

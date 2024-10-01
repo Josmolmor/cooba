@@ -3,7 +3,15 @@
 import { z } from 'zod'
 import { validatedActionWithUser } from '@/lib/auth/middleware'
 import { db } from '@/lib/db/drizzle'
-import { Event, events, user_events, UserEvent } from '@/lib/db/schema'
+import {
+    Event,
+    events,
+    Expense,
+    expenses,
+    user_events,
+    UserEvent,
+} from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 const newEventSchema = z.object({
     title: z.string().min(3).max(255),
@@ -20,7 +28,7 @@ export const addEvent = validatedActionWithUser(
             const [event]: Event[] = await db
                 .insert(events)
                 .values({
-                    name: title,
+                    title,
                     date: new Date(date),
                 })
                 .returning()
@@ -39,6 +47,38 @@ export const addEvent = validatedActionWithUser(
             }
         } catch (error) {
             return { error: `Failed to add new event: ${error}` }
+        }
+    }
+)
+
+const editEventSchema = z.object({
+    id: z.string(),
+    title: z.string().min(3).max(255),
+    date: z.string(),
+})
+
+export const editEvent = validatedActionWithUser(
+    editEventSchema,
+    async (data, _, user) => {
+        const { id, title, date } = data
+
+        try {
+            // Create a new event
+            const [expense]: Expense = await db
+                .update(events)
+                .set({
+                    title,
+                    date: new Date(date),
+                })
+                .where(eq(events.id, id))
+                .returning()
+
+            return {
+                success: 'Event edited successfully',
+                expense,
+            }
+        } catch (error) {
+            return { error: `Failed to edit event: ${error}` }
         }
     }
 )

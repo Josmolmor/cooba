@@ -20,7 +20,7 @@ export const users = pgTable('users', {
 
 export const events = pgTable('events', {
     id: serial('id').primaryKey(),
-    name: text('name').notNull(),
+    title: text('title').notNull(),
     date: timestamp('date').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
