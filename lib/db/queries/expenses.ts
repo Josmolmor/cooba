@@ -1,23 +1,28 @@
 import { db } from '../drizzle'
-import { expenses, user_events } from '../schema'
-import { and, desc, eq } from 'drizzle-orm'
-import { getUser } from '@/lib/db/queries/users'
+import { Expense, expenses } from '../schema'
+import { desc, eq } from 'drizzle-orm'
 
-export async function fetchExpenses(eventId: string) {
-    const user = await getUser()
-    if (!user) {
-        throw new Error('User not authenticated')
-    }
+export async function fetchExpenses(eventId: string): Promise<
+    | {
+          id: Expense['id']
+          description: Expense['description']
+          currency: Expense['currency']
+          amount: Expense['amount']
+          eventId: Expense['event_id']
+          userId: Expense['user_id']
+      }[]
+    | []
+> {
     return await db
         .select({
             id: expenses.id,
             description: expenses.description,
             currency: expenses.currency,
             amount: expenses.amount,
+            eventId: expenses.event_id,
+            userId: expenses.user_id,
         })
         .from(expenses)
-        .where(
-            and(eq(expenses.user_id, user.id), eq(expenses.event_id, +eventId))
-        )
+        .where(eq(expenses.event_id, +eventId))
         .orderBy(desc(expenses.createdAt))
 }

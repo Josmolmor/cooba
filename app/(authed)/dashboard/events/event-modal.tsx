@@ -17,7 +17,6 @@ export default function EventModalForm({
 }: {
     initialState: EventPayload
 }) {
-    console.log('initialState =>', initialState)
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
         initialState ? editEvent : addEvent,

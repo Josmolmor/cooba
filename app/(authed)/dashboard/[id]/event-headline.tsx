@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDateForInputDatetimeLocal, isObjectEmpty } from '@/lib/utils'
 import { Event } from '@/lib/db/schema'
 import { useModal } from '@/context/modal'
+import AnimatedCounter from '@/components/animated-counter'
 
 export default function EventHeadline({
     id,
@@ -17,7 +18,7 @@ export default function EventHeadline({
     id: Event['id']
     title: Event['title']
     date: Event['date']
-    totalsByCurrency: Record<string, string>
+    totalsByCurrency: { [key: string]: number }
 }) {
     const { openModal } = useModal()
 
@@ -59,14 +60,24 @@ export default function EventHeadline({
                         </div>
                         <div className="flex flex-col gap-2 sm:text-right">
                             <div className="text-sm">Total Expenses</div>
-                            <div className="text-2xl font-bold">
+                            <div className="text-2xl font-bold flex gap-2 sm:gap-4 flex-wrap">
                                 {isObjectEmpty(totalsByCurrency)
                                     ? 0
-                                    : Object.entries(totalsByCurrency)
-                                          .map(([currency, total]) => {
-                                              return `${(+total).toFixed(2)} ${currency}`
-                                          })
-                                          .join(' + ')}
+                                    : Object.entries(totalsByCurrency).map(
+                                          ([currency, total]) => (
+                                              <div
+                                                  key={total}
+                                                  className="flex gap-1 items-baseline"
+                                              >
+                                                  <AnimatedCounter
+                                                      targetValue={+total}
+                                                  />
+                                                  <span className="text-muted-foreground text-sm font-normal">
+                                                      {currency}
+                                                  </span>
+                                              </div>
+                                          )
+                                      )}
                             </div>
                         </div>
                     </div>

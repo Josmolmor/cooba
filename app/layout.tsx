@@ -6,8 +6,8 @@ import { getUser } from '@/lib/db/queries/users'
 import { ReactNode } from 'react'
 import { ModalProvider } from '@/context/modal'
 import ModalWrapper from '@/context/modal/wrapper'
-import { LOCAL_STORAGE_KEY } from '@/components/dark-mode-toggle'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { cookies } from 'next/headers'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -30,6 +30,7 @@ export default function RootLayout({
 }: Readonly<{
     children: ReactNode
 }>) {
+    const storedTheme = cookies().get('cooba-theme')?.value
     let userPromise = getUser()
 
     return (
@@ -38,14 +39,13 @@ export default function RootLayout({
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
-                if (localStorage.getItem(${LOCAL_STORAGE_KEY}) === 'dark' || (!(${LOCAL_STORAGE_KEY} in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.style.setProperty('color-scheme', 'dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.style.removeProperty('color-scheme');
-                }
-              `,
+                              (function() {
+                                if (${storedTheme === 'dark'} || (${!storedTheme} && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                                  document.documentElement.classList.add('dark')
+                                  document.documentElement.style.setProperty('color-scheme', 'dark')
+                                }
+                              })();
+                            `,
                     }}
                 />
             </head>

@@ -25,7 +25,6 @@ const CopyInvitationLinkToClipboardButton: FC<
     const handleCopyClick = async () => {
         try {
             const encodedId = await signIdForInvite({ id: eventId })
-            console.log('=>', encodedId)
             const inviteLink = `${window.location.host}/join/${encodedId}`
             await navigator.clipboard.writeText(inviteLink)
             setCopied(true)

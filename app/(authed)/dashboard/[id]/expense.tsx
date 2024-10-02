@@ -1,20 +1,13 @@
 'use client'
 
-import { Expense } from '@/lib/db/schema'
+import { type Expense } from '@/lib/db/schema'
 import { Button } from '@/components/ui/button'
 import {
-    ArrowLeft,
     Banknote,
-    CalendarDays,
     Coffee,
     CreditCard,
-    DollarSign,
     Edit,
-    Edit2,
-    HandCoins,
     Icon,
-    MoreVertical,
-    Pencil,
     Plane,
     ShoppingCart,
     User,
@@ -24,7 +17,6 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
@@ -45,12 +37,24 @@ const categoryColors = {
     food: 'bg-orange-100 text-orange-600 dark:bg-orange-800 dark:text-orange-300',
 }
 
-export default function Expense({
+const slideInClassnames = (index: number) =>
+    `slide-in-from-bottom-${index * 16}`
+
+export default function ExpenseCard({
     id,
     description,
     amount,
     currency,
-}: Pick<Expense, 'id' | 'description' | 'amount' | 'currency'>) {
+    userName,
+    index,
+}: {
+    id: Expense['id']
+    index: number
+    description: Expense['description']
+    amount: Expense['amount']
+    currency: Expense['currency']
+    userName: string
+}) {
     const { openModal } = useModal()
 
     const handleClickEditButton = () => {
@@ -70,12 +74,16 @@ export default function Expense({
         'bg-foreground text-background dark:bg-foreground dark:text-background'
 
     return (
-        <Card className="">
+        <Card
+            className={`animate-in duration-700 ${slideInClassnames(index + 1)} fade-in-0`}
+        >
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold flex gap-1 items-baseline">
                         {(+amount).toFixed(2)}
-                        <span className="text-sm">{currency}</span>
+                        <span className="text-muted-foreground text-sm font-normal">
+                            {currency}
+                        </span>
                     </CardTitle>
                     <div className={`p-2 rounded-full ${colorClass}`}>
                         <Icon className="w-6 h-6" />
@@ -88,7 +96,7 @@ export default function Expense({
                     <div className="flex justify-between items-baseline">
                         <div className="flex items-center text-sm">
                             <User className="h-3 w-3 mr-1" />
-                            <span>You</span>
+                            {userName ? <span>{userName}</span> : null}
                         </div>
                         <Button
                             variant="ghost"

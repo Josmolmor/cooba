@@ -4,12 +4,29 @@ import type { NextRequest } from 'next/server'
 
 const protectedRoutes = '/dashboard'
 const inviteRoute = '/join'
+const authRoutes = ['/sign-in', '/sign-up']
 
 export async function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl
+    const { pathname, searchParams } = request.nextUrl
     const sessionCookie = request.cookies.get('session')
     const isProtectedRoute = pathname.startsWith(protectedRoutes)
     const isInviteRoute = pathname.startsWith(inviteRoute)
+    const isAuthRoute = authRoutes.includes(pathname)
+
+    // Check if 'from' and 'payload' exist, and if 'from' is 'invite'
+    const hasFrom = searchParams.has('from')
+    const hasPayload = searchParams.has('payload')
+    const isFromInvite = searchParams.get('from') === 'invite'
+
+    if (sessionCookie && hasFrom && hasPayload && isFromInvite && isAuthRoute) {
+        return NextResponse.redirect(
+            new URL(`/join/${searchParams.get('payload')}`, request.url)
+        )
+    }
+
+    if (sessionCookie && isAuthRoute) {
+        return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
 
     if (isProtectedRoute && !sessionCookie) {
         return NextResponse.redirect(new URL('/sign-in', request.url))
