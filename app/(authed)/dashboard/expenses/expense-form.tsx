@@ -8,6 +8,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { useParams } from 'next/navigation'
 import { currencyList } from '@/lib/utils/currency'
 import { Expense } from '@/lib/db/schema'
+import { FetchEventUsers, getEventUsers } from '@/lib/db/queries/user_events'
+import { useQuery } from '@tanstack/react-query'
+import { useUser } from '@/lib/auth'
 
 export default function ExpenseForm({
     formAction,
@@ -16,11 +19,33 @@ export default function ExpenseForm({
     className,
 }: {
     formAction: any
-    state: { payload?: Partial<Expense>; error?: string; success?: boolean }
+    state: {
+        payload?: {
+            amount: number
+            description: string
+            id: number
+            currency: string
+            user_id: number
+        }
+        error?: string
+        success?: boolean
+    }
     pending: boolean
     className?: string
 }) {
+    const { user } = useUser()
     const params = useParams()
+    const {
+        status,
+        data: eventUsers,
+        error,
+        isFetching,
+    } = useQuery({
+        queryKey: ['posts'],
+        queryFn: async (): Promise<FetchEventUsers> => {
+            return getEventUsers(`${params.id}`)
+        },
+    })
 
     return (
         <form action={formAction} className={className}>
@@ -66,6 +91,29 @@ export default function ExpenseForm({
                         </option>
                     ))}
                 </select>
+            </div>
+            <div className="space-y-2 max-w-full">
+                <Label htmlFor="user_id">Paid by</Label>
+                {user && status === 'success' ? (
+                    <select
+                        name="user_id"
+                        id="user_id"
+                        required
+                        defaultValue={state.payload?.user_id ?? `${user?.id}`}
+                        className="appearance-none flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        {eventUsers?.map(({ id, name }) => (
+                            <option key={id} value={id}>
+                                {name}
+                            </option>
+                        ))}
+                    </select>
+                ) : (
+                    <div className="flex items-center gap-1 px-3 p-2 rounded-md bg-background">
+                        <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                        Loading event users
+                    </div>
+                )}
             </div>
             <Input
                 type="hidden"

@@ -8,8 +8,9 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import { CalendarDays, ReceiptText } from 'lucide-react'
+import { CalendarDays, ReceiptText, User2 } from 'lucide-react'
 import CopyInvitationLinkToClipboardButton from '@/components/copy-to-clipboard-button'
+import DeleteEventButton from './events/delete-event-button'
 
 export default async function DashboardPage() {
     const events = await fetchEvents()
@@ -21,20 +22,33 @@ export default async function DashboardPage() {
             </h1>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {events?.length ? (
-                    events?.map(({ id, title, date }) => (
+                    events?.map(({ id, title, date, ownerId, creatorName }) => (
                         <Card key={id}>
-                            <CardHeader className="pb-4">
-                                <CardTitle>{title}</CardTitle>
-                                <CardDescription>
+                            <CardHeader className="pb-4 space-y-0">
+                                <CardTitle className="flex items-center justify-between h-9">
+                                    {title}
+                                    <DeleteEventButton
+                                        ownerId={ownerId}
+                                        eventId={id}
+                                    />
+                                </CardTitle>
+                                <CardDescription className="flex gap-5">
                                     <span className="flex items-center">
-                                        <CalendarDays className="mr-2 h-4 w-4" />
+                                        <User2 className="mr-1.5" size={12} />
+                                        {creatorName}
+                                    </span>
+                                    <span className="flex items-center">
+                                        <CalendarDays
+                                            className="mr-1.5"
+                                            size={12}
+                                        />
                                         {new Date(date).toLocaleDateString()}
                                     </span>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="flex gap-4 flex-wrap">
                                 <CopyInvitationLinkToClipboardButton
-                                    eventId={id}
+                                    eventId={id.toString()}
                                     buttonLabel="Copy invite link"
                                 />
                                 <Link

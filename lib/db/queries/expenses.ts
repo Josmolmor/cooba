@@ -2,17 +2,18 @@ import { db } from '../drizzle'
 import { Expense, expenses } from '../schema'
 import { desc, eq } from 'drizzle-orm'
 
-export async function fetchExpenses(eventId: string): Promise<
-    | {
-          id: Expense['id']
-          description: Expense['description']
-          currency: Expense['currency']
-          amount: Expense['amount']
-          eventId: Expense['event_id']
-          userId: Expense['user_id']
-      }[]
-    | []
-> {
+export type FetchExpense = {
+    id: Expense['id']
+    description: Expense['description']
+    currency: Expense['currency']
+    amount: Expense['amount']
+    eventId: Expense['event_id']
+    userId: Expense['user_id']
+}
+
+export async function fetchExpenses(
+    eventId: string
+): Promise<FetchExpense[] | []> {
     return await db
         .select({
             id: expenses.id,

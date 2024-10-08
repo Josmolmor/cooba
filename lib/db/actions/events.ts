@@ -3,15 +3,8 @@
 import { z } from 'zod'
 import { validatedActionWithUser } from '@/lib/auth/middleware'
 import { db } from '@/lib/db/drizzle'
-import {
-    Event,
-    events,
-    Expense,
-    expenses,
-    user_events,
-    UserEvent,
-} from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { Event, events, Expense, user_events } from '@/lib/db/schema'
+import { eq, sql } from 'drizzle-orm'
 
 const newEventSchema = z.object({
     title: z.string().min(3).max(255),
@@ -30,6 +23,7 @@ export const addEvent = validatedActionWithUser(
                 .values({
                     title,
                     date: new Date(date),
+                    owner_id: user.id,
                 })
                 .returning()
 
@@ -64,13 +58,13 @@ export const editEvent = validatedActionWithUser(
 
         try {
             // Create a new event
-            const [expense]: Expense = await db
+            const expense: Expense = await db
                 .update(events)
                 .set({
                     title,
                     date: new Date(date),
                 })
-                .where(eq(events.id, id))
+                .where(eq(events.id, +id))
                 .returning()
 
             return {
@@ -82,3 +76,23 @@ export const editEvent = validatedActionWithUser(
         }
     }
 )
+
+export const disableEvent = async (event_id: number) => {
+    try {
+        // Create a new event
+        const expense: Expense = await db
+            .update(events)
+            .set({
+                deletedAt: sql`CURRENT_TIMESTAMP`,
+            })
+            .where(eq(events.id, event_id))
+            .returning()
+
+        return {
+            success: 'Event disabled successfully',
+            expense,
+        }
+    } catch (error) {
+        return { error: `Failed to disable event: ${error}` }
+    }
+}

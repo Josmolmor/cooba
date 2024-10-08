@@ -46,6 +46,7 @@ export default function ExpenseCard({
     amount,
     currency,
     userName,
+    userId,
     index,
 }: {
     id: Expense['id']
@@ -53,6 +54,7 @@ export default function ExpenseCard({
     description: Expense['description']
     amount: Expense['amount']
     currency: Expense['currency']
+    userId: Expense['user_id']
     userName: string
 }) {
     const { openModal } = useModal()
@@ -63,6 +65,7 @@ export default function ExpenseCard({
             description,
             amount,
             currency,
+            user_id: userId,
         })
     }
 

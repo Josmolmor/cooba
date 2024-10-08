@@ -18,12 +18,12 @@ export const editUser = validatedActionWithUser(
 
         try {
             // Create a new event
-            const [user]: User = await db
+            const [user]: User[] = await db
                 .update(users)
                 .set({
                     name,
                 })
-                .where(eq(users.id, id))
+                .where(eq(users.id, +id))
                 .returning()
 
             return {

@@ -10,12 +10,12 @@ import {
 import { ActionState } from '@/lib/auth/middleware'
 import { ExpensePayload, useModal } from '@/context/modal'
 import ExpenseForm from '@/app/(authed)/dashboard/expenses/expense-form'
-import { addExpense, editExpense } from './actions'
+import { editExpense, addExpense } from '@/lib/db/actions/expenses'
 
 export default function ExpenseModalForm({
-    initialState = null,
+    initialState,
 }: {
-    initialState: ExpensePayload
+    initialState?: ExpensePayload
 }) {
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(

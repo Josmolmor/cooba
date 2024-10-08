@@ -55,7 +55,7 @@ export default function EventHeadline({
                             <CardTitle className="text-2xl">{title}</CardTitle>
                             <div className="text-sm flex items-center">
                                 <CalendarDays className="mr-1 h-4 w-4" />
-                                {new Date(date).toLocaleDateString()}
+                                {new Date(date).toLocaleDateString(['en'])}
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:text-right">

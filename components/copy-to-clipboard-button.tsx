@@ -3,7 +3,6 @@
 import { FC, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, Copy } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 import { signIdForInvite } from '@/lib/utils/crypto'
 import {
     Tooltip,
@@ -20,7 +19,6 @@ const CopyInvitationLinkToClipboardButton: FC<
     CopyInvitationLinkToClipboardButtonProps
 > = ({ eventId, buttonLabel = 'Copy' }) => {
     const [copied, setCopied] = useState(false)
-    const pathname = usePathname()
 
     const handleCopyClick = async () => {
         try {

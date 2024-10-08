@@ -1,9 +1,17 @@
 import { db } from '../drizzle'
-import { events, user_events } from '../schema'
-import { and, desc, eq } from 'drizzle-orm'
+import { events, user_events, Event, User, users } from '../schema'
+import { and, desc, eq, isNull } from 'drizzle-orm'
 import { getUser } from '@/lib/db/queries/users'
 
-export async function fetchEvents() {
+export async function fetchEvents(): Promise<
+    {
+        id: Event['id']
+        title: Event['title']
+        date: Event['date']
+        ownerId: Event['owner_id']
+        creatorName: User['name']
+    }[]
+> {
     const user = await getUser()
     if (!user) {
         throw new Error('User not authenticated')
@@ -13,10 +21,13 @@ export async function fetchEvents() {
             id: events.id,
             title: events.title,
             date: events.date,
+            ownerId: events.owner_id,
+            creatorName: users.name, // Select the creator's name
         })
         .from(events)
         .innerJoin(user_events, eq(events.id, user_events.event_id))
-        .where(eq(user_events.user_id, user.id))
+        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
+        .where(and(eq(user_events.user_id, user.id), isNull(events.deletedAt)))
         .orderBy(desc(events.updatedAt))
 }
 
@@ -33,7 +44,7 @@ export async function fetchEvent(eventId: string) {
         })
         .from(events)
         .innerJoin(user_events, eq(events.id, user_events.event_id))
-        .where(and(eq(user_events.user_id, user.id), eq(events.id, eventId)))
+        .where(and(eq(user_events.user_id, user.id), eq(events.id, +eventId)))
         .orderBy(desc(events.updatedAt))
 
     return event

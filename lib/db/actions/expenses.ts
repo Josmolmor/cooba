@@ -11,23 +11,24 @@ const newExpenseSchema = z.object({
     amount: z.string(),
     currency: z.string(),
     event_id: z.string(),
+    user_id: z.string(),
 })
 
 export const addExpense = validatedActionWithUser(
     newExpenseSchema,
     async (data, _, user) => {
-        const { event_id, description, currency, amount } = data
+        const { event_id, description, currency, amount, user_id } = data
 
         try {
             // Create a new event
-            const [expense]: Expense = await db
+            const [expense]: Expense[] = await db
                 .insert(expenses)
                 .values({
-                    event_id: event_id,
-                    user_id: user.id,
+                    event_id: +event_id,
+                    user_id: +user_id ?? user.id,
                     description,
                     currency,
-                    amount: parseFloat(amount),
+                    amount: parseFloat(amount).toString(),
                 })
                 .returning()
 
@@ -47,24 +48,25 @@ const editExpenseSchema = z.object({
     amount: z.string(),
     currency: z.string(),
     event_id: z.string(),
+    user_id: z.string(),
 })
 
 export const editExpense = validatedActionWithUser(
     editExpenseSchema,
     async (data, _, user) => {
-        const { id, description, currency, amount } = data
+        const { id, description, currency, amount, user_id } = data
 
         try {
             // Create a new event
-            const [expense]: Expense = await db
+            const [expense]: Expense[] = await db
                 .update(expenses)
                 .set({
-                    user_id: user.id,
+                    user_id: +user_id ?? user.id,
                     description,
                     currency,
-                    amount: parseFloat(amount),
+                    amount: parseFloat(amount).toString(),
                 })
-                .where(eq(expenses.id, id))
+                .where(eq(expenses.id, +id))
                 .returning()
 
             return {

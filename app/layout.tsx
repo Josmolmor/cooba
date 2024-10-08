@@ -8,6 +8,7 @@ import { ModalProvider } from '@/context/modal'
 import ModalWrapper from '@/context/modal/wrapper'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { cookies } from 'next/headers'
+import Providers from '@/lib/query-provider'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -52,14 +53,16 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-[100dvh]`}
             >
-                <TooltipProvider delayDuration={200}>
-                    <ModalProvider>
-                        <UserProvider userPromise={userPromise}>
-                            {children}
-                            <ModalWrapper />
-                        </UserProvider>
-                    </ModalProvider>
-                </TooltipProvider>
+                <Providers>
+                    <TooltipProvider delayDuration={200}>
+                        <ModalProvider>
+                            <UserProvider userPromise={userPromise}>
+                                {children}
+                                <ModalWrapper />
+                            </UserProvider>
+                        </ModalProvider>
+                    </TooltipProvider>
+                </Providers>
             </body>
         </html>
     )

@@ -22,6 +22,7 @@ export const events = pgTable('events', {
     id: serial('id').primaryKey(),
     title: text('title').notNull(),
     date: timestamp('date').notNull(),
+    owner_id: integer('owner_id').references(() => users.id),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     deletedAt: timestamp('deleted_at'),
@@ -30,7 +31,9 @@ export const events = pgTable('events', {
 export const expenses = pgTable('expenses', {
     id: serial('id').primaryKey(),
     event_id: integer('event_id').references(() => events.id),
-    user_id: integer('user_id').references(() => users.id),
+    user_id: integer('user_id').references(() => users.id, {
+        onDelete: 'cascade',
+    }),
     description: text('description').notNull(),
     amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
     currency: text('currency').notNull().default('EUR'),

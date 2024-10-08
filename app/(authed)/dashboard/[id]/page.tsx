@@ -1,21 +1,16 @@
 import { fetchEvent } from '@/lib/db/queries/events'
 import { redirect } from 'next/navigation'
-import { fetchExpenses } from '@/lib/db/queries/expenses'
+import { FetchExpense, fetchExpenses } from '@/lib/db/queries/expenses'
 import EmptyState from '@/components/empty-state'
 import EventHeadline from '@/app/(authed)/dashboard/[id]/event-headline'
-import {
-    getAllUsersEventsByEventId,
-    getUser,
-    getUserById,
-} from '@/lib/db/queries/users'
+import { getAllUsersEventsByEventId, getUser } from '@/lib/db/queries/users'
 import ExpenseCard from '@/app/(authed)/dashboard/[id]/expense'
-import { Expense } from '@/lib/db/schema'
 
 type Totals = {
     [key: string]: number // Key is the currency, value is the total amount
 }
 
-const totalsByCurrency = (expenses: Expense[]): Totals => {
+const totalsByCurrency = (expenses: FetchExpense[]): Totals => {
     const totals = expenses.reduce<Totals>((acc, expense) => {
         const { amount, currency } = expense
         const amountNumber = parseFloat(amount)
@@ -52,7 +47,7 @@ export default async function EventPage({
     return (
         <div className="max-w-7xl w-full mx-auto py-6 px-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 flex flex-col gap-4">
             <EventHeadline
-                id={params.id}
+                id={+params.id}
                 title={event.title}
                 date={event.date}
                 totalsByCurrency={totalsByCurrency(expenses)}
@@ -75,10 +70,11 @@ export default async function EventPage({
                                 description={description}
                                 amount={amount}
                                 currency={currency}
+                                userId={userId}
                                 userName={
                                     usersList?.find(
                                         (user) => user.userId === userId
-                                    )?.userName
+                                    )?.userName ?? ''
                                 }
                             />
                         )

@@ -6,14 +6,7 @@ import ExpenseModalForm from '@/app/(authed)/dashboard/expenses/expense-modal'
 import EventModalForm from '@/app/(authed)/dashboard/events/event-modal'
 
 const ModalWrapper = () => {
-    const {
-        isOpen,
-        openModal,
-        modalVariant,
-        closeModal,
-        eventPayload,
-        expensePayload,
-    } = useModal()
+    const { isOpen, modalVariant, eventPayload, expensePayload } = useModal()
 
     if (!isOpen) return null
 

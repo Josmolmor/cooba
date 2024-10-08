@@ -1,12 +1,12 @@
 'use client'
 
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { Expense } from '@/lib/db/schema'
+import { Expense, Event } from '@/lib/db/schema'
 
 export type EventPayload = Pick<Event, 'id' | 'title' | 'date'> | null
 export type ExpensePayload = Pick<
     Expense,
-    'id' | 'description' | 'amount' | 'currency'
+    'id' | 'description' | 'amount' | 'currency' | 'user_id'
 > | null
 
 type ModalVariant = 'new_event' | 'edit_event' | 'new_expense' | 'edit_expense'

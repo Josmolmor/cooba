@@ -8,14 +8,14 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
-import { addEvent, editEvent } from './actions'
 import EventForm from '@/app/(authed)/dashboard/events/event-form'
 import { EventPayload, useModal } from '@/context/modal'
+import { editEvent, addEvent } from '@/lib/db/actions/events'
 
 export default function EventModalForm({
-    initialState = null,
+    initialState,
 }: {
-    initialState: EventPayload
+    initialState?: EventPayload
 }) {
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(

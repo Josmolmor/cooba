@@ -148,19 +148,21 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
                             </span>
                         </div>
                     </div>
-
-                    <div className="mt-6">
-                        <Link
-                            aria-disabled={pending}
-                            href={`${mode === 'signin' ? '/sign-up' : '/sign-in'}${
-                                from ? `?from=${from}` : ''
-                            }${payload ? `&payload=${payload}` : ''}`}
-                            className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                        >
-                            {mode === 'signin'
-                                ? 'Create an account'
-                                : 'Sign in to existing account'}
-                        </Link>
+                    <div className="mt-6 text-center">
+                        <Button disabled={pending} asChild variant="outline">
+                            <Link
+                                className="sm:w-full"
+                            
+                                aria-disabled={pending}
+                                href={`${mode === 'signin' ? '/sign-up' : '/sign-in'}${
+                                    from ? `?from=${from}` : ''
+                                }${payload ? `&payload=${payload}` : ''}`}
+                            >
+                                {mode === 'signin'
+                                    ? 'Create an account'
+                                    : 'Sign in to existing account'}
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </div>
