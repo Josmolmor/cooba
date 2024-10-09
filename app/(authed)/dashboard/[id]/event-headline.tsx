@@ -47,9 +47,9 @@ export default function EventHeadline({
     return (
         <>
             <div className="flex items-center justify-between gap-4 flex-wrap">
-                <Button variant="link" asChild>
-                    <Link href="/dashboard">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
+                <Button variant="link" asChild className="group">
+                    <Link href="/dashboard" className="flex items-center">
+                        <ArrowLeft className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
                         All events
                     </Link>
                 </Button>

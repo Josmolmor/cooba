@@ -97,21 +97,6 @@ function Header() {
                             <Link href="/sign-up">Sign Up</Link>
                         </Button>
                     )}
-                    {user ? (
-                        <Button
-                            variant="link"
-                            onClick={() => {
-                                if (params.id) {
-                                    openModal('new_expense')
-                                } else {
-                                    openModal('new_event')
-                                }
-                            }}
-                            className="p-0"
-                        >
-                            <CirclePlus size={32} />
-                        </Button>
-                    ) : null}
                     <DarkModeToggle />
                 </div>
             </div>

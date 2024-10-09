@@ -5,6 +5,7 @@ import EmptyState from '@/components/empty-state'
 import EventHeadline from '@/app/(authed)/dashboard/[id]/event-headline'
 import { getAllUsersEventsByEventId } from '@/lib/db/queries/users'
 import ExpenseCard from '@/app/(authed)/dashboard/[id]/expense-card'
+import NewExpenseButton from './new-expense-button'
 
 type Totals = {
     [key: string]: number // Key is the currency, value is the total amount
@@ -61,7 +62,12 @@ export default async function EventPage({
                 }
             />
 
-            <h2 className="text-2xl font-semibold">Expenses</h2>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+                <h2 className="text-2xl font-semibold">Expenses</h2>
+                {expenses.status === 'fulfilled' && expenses.value.length ? (
+                    <NewExpenseButton />
+                ) : null}
+            </div>
             <div
                 className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
             >

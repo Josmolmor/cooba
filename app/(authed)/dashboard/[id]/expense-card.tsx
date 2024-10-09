@@ -8,6 +8,7 @@ import {
     Briefcase,
     Car,
     Coffee,
+    Drama,
     Dumbbell,
     Edit,
     Film,
@@ -15,6 +16,7 @@ import {
     Heart,
     Home,
     Minus,
+    Music,
     Pizza,
     Plane,
     Plus,
@@ -51,6 +53,8 @@ const categoryIcons: Record<Category, typeof Banknote> = {
     fitness: Dumbbell,
     entertainment: Film,
     gifts: Gift,
+    acts: Drama,
+    music: Music,
 }
 
 const slideInClassnames = (index: number) =>
@@ -73,10 +77,12 @@ export const categoryColors: Record<Category, string> = {
     education:
         'bg-teal-100 text-teal-600 dark:bg-teal-800/70 dark:text-teal-300',
     fitness: 'bg-lime-100 text-lime-600 dark:bg-lime-800/70 dark:text-lime-300',
-    entertainment:
-        'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-800/70 dark:text-fuchsia-300',
-    gifts: 'bg-rose-100 text-rose-600 dark:bg-rose-800/70 dark:text-rose-300',
+    gifts: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-800/70 dark:text-emerald-300',
     coffee: 'bg-amber-100 text-amber-600 dark:bg-amber-800/70 dark:text-amber-300',
+    entertainment:
+        'bg-rose-100 text-rose-600 dark:bg-rose-800/70 dark:text-rose-300',
+    acts: 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-800/70 dark:text-fuchsia-300',
+    music: 'bg-violet-100 text-violet-600 dark:bg-violet-800/70 dark:text-violet-300',
 }
 
 export default function ExpenseCard({

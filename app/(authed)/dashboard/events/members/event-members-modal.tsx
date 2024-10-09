@@ -12,6 +12,7 @@ import { Trash2 } from 'lucide-react'
 import { useState, useTransition } from 'react'
 import { removeEventMember } from './actions'
 import { EventMembers } from '@/lib/db/queries/users'
+import { useUser } from '@/lib/auth'
 
 interface EventMembersModalProps {
     ownerId?: number | null
@@ -22,6 +23,7 @@ export default function EventMembersModal({
     ownerId,
     initialMembers,
 }: EventMembersModalProps) {
+    const { user } = useUser()
     const { isOpen, closeModal } = useModal()
     const [isPending, startTransition] = useTransition()
     const [members, setMembers] = useState(initialMembers)
@@ -46,7 +48,7 @@ export default function EventMembersModal({
                 <DialogHeader>
                     <DialogTitle>Event Members</DialogTitle>
                 </DialogHeader>
-                <ul className="space-y-2">
+                <ul className="flex flex-col gap-2">
                     {members.map((member) => (
                         <li
                             key={member.userId}
@@ -55,7 +57,8 @@ export default function EventMembersModal({
                             <span>
                                 {member.userName} ({member.userEmail})
                             </span>
-                            {ownerId !== member.userId && (
+                            {(ownerId === user?.id ||
+                                ownerId !== member.userId) && (
                                 <Button
                                     variant="ghost"
                                     size="sm"
@@ -67,7 +70,7 @@ export default function EventMembersModal({
                                     }
                                     disabled={isPending}
                                 >
-                                    <Trash2 className="h-4 w-4" />
+                                    <Trash2 size={14} />
                                 </Button>
                             )}
                         </li>

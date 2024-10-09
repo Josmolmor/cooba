@@ -29,7 +29,6 @@ const ModalWrapper = () => {
         case 'view_event_members':
             return (
                 <EventMembersModal
-                    eventId={eventMembersPayload?.eventId}
                     ownerId={eventMembersPayload?.ownerId}
                     initialMembers={eventMembersPayload?.initialMembers ?? []}
                 />

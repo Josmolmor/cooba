@@ -13,9 +13,15 @@ export default function DarkModeToggle() {
     }
 
     return (
-        <button onClick={toggleTheme} className="">
-            <Sun size={32} className="hidden dark:block animate-in spin-in" />
-            <Moon size={32} className="block dark:hidden animate-in spin-in" />
+        <button onClick={toggleTheme} className="group">
+            <Sun
+                size={32}
+                className="hidden dark:block animate-in spin-in transition-transform duration-200 group-hover:-rotate-180"
+            />
+            <Moon
+                size={32}
+                className="block dark:hidden animate-in spin-in transition-transform duration-200 group-hover:-rotate-180"
+            />
         </button>
     )
 }

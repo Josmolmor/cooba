@@ -14,6 +14,8 @@ export type Category =
     | 'entertainment'
     | 'gifts'
     | 'coffee'
+    | 'music'
+    | 'acts'
 
 export const categoryKeywords: Record<Category, string[]> = {
     coffee: ['coffee', 'stabucks'],
@@ -133,15 +135,16 @@ export const categoryKeywords: Record<Category, string[]> = {
         'swimming',
         'running',
     ],
-    entertainment: [
-        'movie',
-        'concert',
+    entertainment: ['movie', 'streaming', 'netflix'],
+    music: ['concert', 'music', 'spotify'],
+    acts: [
         'theater',
         'show',
-        'music',
-        'streaming',
-        'netflix',
-        'spotify',
+        'monologue',
+        'stand-up',
+        'standup',
+        'stand up',
+        'drama',
     ],
     gifts: [
         'present',
