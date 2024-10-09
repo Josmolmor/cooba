@@ -2,7 +2,7 @@ import { verifyToken, signToken } from './lib/auth/session'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const protectedRoutes = '/dashboard'
+const protectedRoutes = '/events'
 const inviteRoute = '/join'
 const authRoutes = ['/sign-in', '/sign-up']
 
@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (sessionCookie && isAuthRoute) {
-        return NextResponse.redirect(new URL('/dashboard', request.url))
+        return NextResponse.redirect(new URL('/events', request.url))
     }
 
     if (isProtectedRoute && !sessionCookie) {

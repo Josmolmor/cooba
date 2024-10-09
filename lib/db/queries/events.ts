@@ -52,3 +52,25 @@ export async function fetchEvent(eventId: string) {
 
     return event
 }
+
+export async function fetchPublicEvent(eventId: string): Promise<{
+    id: number
+    title: string
+    description: string | null
+    date: Date
+    creatorName: string | null
+}> {
+    const [event] = await db
+        .select({
+            id: events.id,
+            title: events.title,
+            description: events.description,
+            date: events.date,
+            creatorName: users.name, // Select the creator's name
+        })
+        .from(events)
+        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
+        .where(eq(events.id, +eventId))
+
+    return event
+}

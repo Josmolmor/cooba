@@ -48,12 +48,12 @@ export default function EventHeadline({
         <>
             <div className="flex items-center justify-between gap-4 flex-wrap">
                 <Button variant="link" asChild className="group">
-                    <Link href="/dashboard" className="flex items-center">
+                    <Link href="/events" className="flex items-center">
                         <ArrowLeft className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
                         All events
                     </Link>
                 </Button>
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                     <Button
                         onClick={handleClickEditButton}
                         className="sm:w-auto"
@@ -74,8 +74,10 @@ export default function EventHeadline({
                 <CardHeader className="pb-6">
                     <div className="flex justify-between items-start flex-wrap gap-8">
                         <div className="flex flex-col gap-2">
-                            <CardTitle className="text-4xl">{title}</CardTitle>
-                            <div className="text-sm flex items-center text-muted-foreground gap-4">
+                            <CardTitle className="text-4xl font-semibold">
+                                {title}
+                            </CardTitle>
+                            <div className="text-sm flex items-center text-muted-foreground gap-4 flex-wrap">
                                 <span className="flex items-center">
                                     <CalendarDays className="mr-2" size={12} />
                                     {new Date(date).toLocaleDateString(['en'])}

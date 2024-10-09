@@ -2,9 +2,9 @@ import { fetchEvent } from '@/lib/db/queries/events'
 import { redirect } from 'next/navigation'
 import { FetchExpense, fetchExpenses } from '@/lib/db/queries/expenses'
 import EmptyState from '@/components/empty-state'
-import EventHeadline from '@/app/(authed)/dashboard/[id]/event-headline'
+import EventHeadline from '@/app/(authed)/events/[id]/event-headline'
 import { getAllUsersEventsByEventId } from '@/lib/db/queries/users'
-import ExpenseCard from '@/app/(authed)/dashboard/[id]/expense-card'
+import ExpenseCard from '@/app/(authed)/events/[id]/expense-card'
 import NewExpenseButton from './new-expense-button'
 
 type Totals = {
@@ -36,10 +36,10 @@ export default async function EventPage({
 }: {
     params: { id: string }
 }) {
-    if (!params.id) redirect('/dashboard')
+    if (!params.id) redirect('/events')
 
     const event = await fetchEvent(params.id)
-    if (!event) redirect('/dashboard')
+    if (!event) redirect('/events')
 
     const [expenses, usersList] = await Promise.allSettled([
         fetchExpenses(params.id),

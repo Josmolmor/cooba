@@ -35,9 +35,9 @@ export default function EventMembersModal({
                 setMembers(
                     members.filter((member) => member.userId !== memberId)
                 )
+                closeModal()
             } catch (error) {
                 console.error('Failed to remove member:', error)
-                // Handle error (e.g., show an error message to the user)
             }
         })
     }

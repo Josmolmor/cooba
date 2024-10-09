@@ -40,7 +40,7 @@ export default function ShiftingHeader() {
                         </p>
                     </div>
                     <Button size="lg" asChild>
-                        <Link href="/dashboard">Get started</Link>
+                        <Link href="/events">Get started</Link>
                     </Button>
                 </div>
             </div>

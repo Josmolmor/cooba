@@ -21,8 +21,9 @@ export const users = pgTable('users', {
 export const events = pgTable('events', {
     id: serial('id').primaryKey(),
     title: text('title').notNull(),
+    description: text('description'),
     date: timestamp('date').notNull(),
-    owner_id: integer('owner_id').references(() => users.id),
+    ownerId: integer('owner_id').references(() => users.id),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     deletedAt: timestamp('deleted_at'),
@@ -30,8 +31,8 @@ export const events = pgTable('events', {
 
 export const expenses = pgTable('expenses', {
     id: serial('id').primaryKey(),
-    event_id: integer('event_id').references(() => events.id),
-    user_id: integer('user_id').references(() => users.id, {
+    eventId: integer('event_id').references(() => events.id),
+    userId: integer('user_id').references(() => users.id, {
         onDelete: 'cascade',
     }),
     description: text('description').notNull(),
@@ -44,13 +45,14 @@ export const expenses = pgTable('expenses', {
 
 export const user_events = pgTable('user_events', {
     id: serial('id').primaryKey(),
-    user_id: integer('user_id').references(() => users.id, {
+    userId: integer('user_id').references(() => users.id, {
         onDelete: 'cascade',
     }),
-    event_id: integer('event_id').references(() => events.id, {
+    eventId: integer('event_id').references(() => events.id, {
         onDelete: 'cascade',
     }),
-    joined_at: timestamp('joined_at').notNull().defaultNow(),
+    joinedAt: timestamp('joined_at').notNull().defaultNow(),
+    deletedAt: timestamp('deleted_at'),
 })
 
 export type User = typeof users.$inferSelect

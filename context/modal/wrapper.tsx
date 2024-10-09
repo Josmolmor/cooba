@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { useModal } from '@/context/modal/index'
-import ExpenseModalForm from '@/app/(authed)/dashboard/expenses/expense-modal'
-import EventModalForm from '@/app/(authed)/dashboard/events/event-modal'
-import EventMembersModal from '@/app/(authed)/dashboard/events/members/event-members-modal'
+import ExpenseModalForm from '@/app/(authed)/events/(interactions)/expenses/expense-modal'
+import EventModalForm from '@/app/(authed)/events/(interactions)/events/event-modal'
+import EventMembersModal from '@/app/(authed)/events/(interactions)/events/members/event-members-modal'
 
 const ModalWrapper = () => {
     const {

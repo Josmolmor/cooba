@@ -8,13 +8,14 @@ import { eq, sql } from 'drizzle-orm'
 
 const newEventSchema = z.object({
     title: z.string().min(3).max(255),
+    description: z.string().max(255).nullable(),
     date: z.string(),
 })
 
 export const addEvent = validatedActionWithUser(
     newEventSchema,
     async (data, _, user) => {
-        const { title, date } = data
+        const { title, description, date } = data
 
         try {
             // Create a new event
@@ -22,6 +23,7 @@ export const addEvent = validatedActionWithUser(
                 .insert(events)
                 .values({
                     title,
+                    description,
                     date: new Date(date),
                     owner_id: user.id,
                 })
@@ -48,13 +50,14 @@ export const addEvent = validatedActionWithUser(
 const editEventSchema = z.object({
     id: z.string(),
     title: z.string().min(3).max(255),
+    description: z.string().max(255).nullable(),
     date: z.string(),
 })
 
 export const editEvent = validatedActionWithUser(
     editEventSchema,
     async (data, _, user) => {
-        const { id, title, date } = data
+        const { id, title, description, date } = data
 
         try {
             // Create a new event
@@ -62,6 +65,7 @@ export const editEvent = validatedActionWithUser(
                 .update(events)
                 .set({
                     title,
+                    description,
                     date: new Date(date),
                 })
                 .where(eq(events.id, +id))

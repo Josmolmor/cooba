@@ -13,8 +13,13 @@ export async function signIdForInvite(payload: { id: string }) {
 }
 
 export async function verifyInviteId(input: string) {
-    const { payload } = await jwtVerify(input, key, {
-        algorithms: ['HS256'],
-    })
-    return payload as { id: string }
+    try {
+        const { payload } = await jwtVerify(input, key, {
+            algorithms: ['HS256'],
+        })
+        return payload as { id: string }
+    } catch (err) {
+        console.error(err)
+        return null
+    }
 }

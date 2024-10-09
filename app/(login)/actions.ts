@@ -47,7 +47,7 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
     if (from === 'invite' && payload) {
         return redirect(`/join/${payload}`)
     }
-    redirect('/dashboard')
+    redirect('/events')
 })
 
 const signUpSchema = z.object({
@@ -90,7 +90,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     if (from === 'invite' && payload) {
         return redirect(`/join/${payload}`)
     }
-    redirect('/dashboard')
+    redirect('/events')
 })
 
 export async function signOut() {

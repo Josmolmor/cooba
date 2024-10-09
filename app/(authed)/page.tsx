@@ -152,7 +152,7 @@ export default function HomePage() {
                                 </p>
                             </div>
                             <Button size="lg" asChild>
-                                <Link href="/dashboard">
+                                <Link href="/events">
                                     Get Started for Free
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>

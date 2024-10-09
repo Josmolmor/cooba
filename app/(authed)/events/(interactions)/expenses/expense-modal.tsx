@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
 import { ExpensePayload, useModal } from '@/context/modal'
-import ExpenseForm from '@/app/(authed)/dashboard/expenses/expense-form'
+import ExpenseForm from '@/app/(authed)/events/(interactions)/expenses/expense-form'
 import { editExpense, addExpense } from '@/lib/db/actions/expenses'
 
 export default function ExpenseModalForm({

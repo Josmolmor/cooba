@@ -6,14 +6,8 @@ import {
     CardDescription,
     CardContent,
 } from '@/components/ui/card'
-import {
-    User2,
-    CalendarDays,
-    ReceiptText,
-    ArrowUp,
-    ArrowDown,
-} from 'lucide-react'
-import DeleteEventButton from './events/delete-event-button'
+import { ReceiptText, ArrowUp, ArrowDown } from 'lucide-react'
+import DeleteEventButton from './(interactions)/events/delete-event-button'
 import { getEventExpenses } from '@/lib/db/queries/expenses'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/currency'
@@ -129,7 +123,7 @@ export async function EventCard({
                         buttonLabel="Copy invite link"
                     />
                     <Link
-                        href={`/dashboard/${id}`}
+                        href={`/events/${id}`}
                         key={id}
                         className="inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 self-start w-full sm:w-auto"
                     >

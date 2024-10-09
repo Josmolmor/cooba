@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function EventForm({
     formAction,
@@ -26,11 +27,20 @@ export default function EventForm({
                 <Input
                     id="title"
                     name="title"
-                    className=""
                     type="text"
                     placeholder="Event title"
                     required
                     defaultValue={state.payload?.title ?? ''}
+                />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                    id="description"
+                    name="description"
+                    placeholder="Event description"
+                    required
+                    defaultValue={state.payload?.description ?? ''}
                 />
             </div>
             <div className="space-y-2">

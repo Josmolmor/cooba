@@ -11,20 +11,15 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/lib/auth'
-import { CirclePlus, Home, LogOut, UserCog } from 'lucide-react'
+import { Home, LogOut, UserCog } from 'lucide-react'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
-import { useModal } from '@/context/modal'
+import { useRouter } from 'next/navigation'
+import { ReactNode, useState } from 'react'
 import DarkModeToggle from '@/components/dark-mode-toggle'
 
 function Header() {
-    const { openModal } = useModal()
-
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const { user } = useUser()
-
-    const params = useParams()
     const { push } = useRouter()
 
     async function handleSignOut() {
@@ -39,11 +34,7 @@ function Header() {
                     <Logo />
                     <span className="ml-2 text-xl font-semibold">Cooba</span>
                 </Link>
-                <div
-                    className="flex items-center gap-4
-                    border bg-card py-2 px-2 pr-3 fixed bottom-6 left-[50%] translate-x-[-50%] rounded-full
-                    sm:pr-auto sm:border-0 sm:bg-transparent sm:relative sm:bottom-auto sm:left-auto sm:translate-x-0"
-                >
+                <div className="flex items-center gap-4 sm:pr-auto sm:border-0 sm:bg-transparent sm:relative sm:bottom-auto sm:left-auto sm:translate-x-0">
                     {user ? (
                         <DropdownMenu
                             open={isMenuOpen}
@@ -63,7 +54,7 @@ function Header() {
                             <DropdownMenuContent className="flex flex-col gap-1">
                                 <DropdownMenuItem className="cursor-pointer">
                                     <Link
-                                        href="/dashboard"
+                                        href="/events"
                                         className="flex w-full items-center"
                                     >
                                         <Home className="mr-2 h-4 w-4" />

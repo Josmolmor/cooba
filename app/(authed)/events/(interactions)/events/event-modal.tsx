@@ -8,7 +8,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
-import EventForm from '@/app/(authed)/dashboard/events/event-form'
+import EventForm from '@/app/(authed)/events/(interactions)/events/event-form'
 import { EventPayload, useModal } from '@/context/modal'
 import { editEvent, addEvent } from '@/lib/db/actions/events'
 
