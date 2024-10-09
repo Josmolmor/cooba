@@ -39,7 +39,7 @@ export async function EventCard({
     return (
         <Card>
             <CardHeader className="pb-4 space-y-0">
-                <CardTitle className="flex items-start justify-between h-9 text-2xl mb-2">
+                <CardTitle className="flex items-start justify-between h-9 text-2xl mb-4 sm:mb-2">
                     {title}
                     <DeleteEventButton ownerId={ownerId} eventId={id} />
                 </CardTitle>

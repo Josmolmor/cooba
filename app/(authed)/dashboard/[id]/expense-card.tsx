@@ -4,15 +4,25 @@ import { type Expense } from '@/lib/db/schema'
 import { Button } from '@/components/ui/button'
 import {
     Banknote,
+    BookOpen,
+    Briefcase,
+    Car,
     Coffee,
     CreditCard,
+    Dumbbell,
     Edit,
-    Icon,
+    Film,
+    Gift,
+    Heart,
+    Home,
     Minus,
+    Pizza,
     Plane,
     Plus,
     ShoppingCart,
+    Smartphone,
     User,
+    Utensils,
 } from 'lucide-react'
 import { useModal } from '@/context/modal'
 import {
@@ -23,21 +33,29 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import { useUser } from '@/lib/auth'
+import { formatCurrency } from '@/lib/utils/currency'
+import {
+    Category,
+    categoryColors,
+    detectCategory,
+} from '@/lib/utils/expense-categories'
 
-const categoryIcons = {
+const categoryIcons: Record<Category, typeof Banknote> = {
     general: Banknote,
     shopping: ShoppingCart,
     travel: Plane,
-    food: Coffee,
-}
-
-const categoryColors = {
-    general:
-        'bg-purple-100 text-purple-600 dark:bg-purple-800 dark:text-purple-300',
-    shopping:
-        'bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-300',
-    travel: 'bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-300',
-    food: 'bg-orange-100 text-orange-600 dark:bg-orange-800 dark:text-orange-300',
+    food: Pizza,
+    coffee: Coffee,
+    transport: Car,
+    home: Home,
+    dining: Utensils,
+    work: Briefcase,
+    health: Heart,
+    tech: Smartphone,
+    education: BookOpen,
+    fitness: Dumbbell,
+    entertainment: Film,
+    gifts: Gift,
 }
 
 const slideInClassnames = (index: number) =>
@@ -75,9 +93,9 @@ export default function ExpenseCard({
         })
     }
 
-    const category = 'general'
+    const category = detectCategory(description)
 
-    const Icon = categoryIcons[category] || CreditCard
+    const Icon = categoryIcons[category] || categoryIcons['general']
     const colorClass =
         categoryColors[category] ||
         'bg-foreground text-background dark:bg-foreground dark:text-background'
@@ -88,17 +106,16 @@ export default function ExpenseCard({
         >
             <CardHeader>
                 <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl font-bold flex gap-1 items-baseline">
+                    <CardTitle className="text-2xl font-semibold flex gap-1 items-baseline">
                         <span className={`flex items-center gap-1`}>
                             {isUser ? <Plus size={14} /> : <Minus size={14} />}
-                            {(+amount).toFixed(2)}
-                        </span>
-                        <span className="text-muted-foreground text-sm font-normal">
-                            {currency}
+                            <span>
+                                {formatCurrency(Math.abs(+amount), currency)}
+                            </span>
                         </span>
                     </CardTitle>
                     <div className={`p-2 rounded-full ${colorClass}`}>
-                        <Icon className="w-6 h-6" />
+                        <Icon className="w-4 h-4" />
                     </div>
                 </div>
             </CardHeader>
@@ -107,7 +124,7 @@ export default function ExpenseCard({
                     <p>{description}</p>
                     <div className={`flex justify-between items-baseline mt-2`}>
                         <div className={`flex items-center text-sm`}>
-                            <User className="h-3 w-3 mr-1" />
+                            <User className="h-3 w-3 mr-2" />
                             {userName ? <span>{userName}</span> : null}
                         </div>
                         <Button
