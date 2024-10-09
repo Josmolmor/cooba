@@ -6,15 +6,15 @@ import { EventMembers } from '@/lib/db/queries/users'
 
 export type EventPayload = Pick<
     Event,
-    'id' | 'title' | 'date' | 'owner_id'
+    'id' | 'title' | 'date' | 'ownerId'
 > | null
 export type ExpensePayload = Pick<
     Expense,
-    'id' | 'description' | 'amount' | 'currency' | 'user_id'
+    'id' | 'description' | 'amount' | 'currency' | 'userId'
 > | null
 
 export type EventMembersPayload = {
-    ownerId: number
+    ownerId: Event['ownerId']
     initialMembers: EventMembers[]
 } | null
 

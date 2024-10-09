@@ -13,8 +13,8 @@ export async function getEventUsers(eventId: string): Promise<FetchEventUsers> {
             name: (users.name || users.email) ?? '',
         })
         .from(users)
-        .innerJoin(user_events, eq(users.id, user_events.user_id))
-        .where(eq(user_events.event_id, +eventId))
+        .innerJoin(user_events, eq(users.id, user_events.userId))
+        .where(eq(user_events.eventId, +eventId))
 
     return eventUsers
 }

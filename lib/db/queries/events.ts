@@ -8,7 +8,7 @@ export async function fetchEvents(): Promise<
         id: Event['id']
         title: Event['title']
         date: Event['date']
-        ownerId: Event['owner_id']
+        ownerId: Event['ownerId']
         creatorName: User['name']
     }[]
 > {
@@ -21,13 +21,13 @@ export async function fetchEvents(): Promise<
             id: events.id,
             title: events.title,
             date: events.date,
-            ownerId: events.owner_id,
+            ownerId: events.ownerId,
             creatorName: users.name, // Select the creator's name
         })
         .from(events)
-        .innerJoin(user_events, eq(events.id, user_events.event_id))
-        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
-        .where(and(eq(user_events.user_id, user.id), isNull(events.deletedAt)))
+        .innerJoin(user_events, eq(events.id, user_events.eventId))
+        .innerJoin(users, eq(events.ownerId, users.id)) // Join users table with events using ownerId
+        .where(and(eq(user_events.userId, user.id), isNull(events.deletedAt)))
         .orderBy(desc(events.updatedAt))
 }
 
@@ -41,13 +41,13 @@ export async function fetchEvent(eventId: string) {
             id: events.id,
             title: events.title,
             date: events.date,
-            ownerId: events.owner_id,
+            ownerId: events.ownerId,
             creatorName: users.name, // Select the creator's name
         })
         .from(events)
-        .innerJoin(user_events, eq(events.id, user_events.event_id))
-        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
-        .where(and(eq(user_events.user_id, user.id), eq(events.id, +eventId)))
+        .innerJoin(user_events, eq(events.id, user_events.eventId))
+        .innerJoin(users, eq(events.ownerId, users.id)) // Join users table with events using ownerId
+        .where(and(eq(user_events.userId, user.id), eq(events.id, +eventId)))
         .orderBy(desc(events.updatedAt))
 
     return event
@@ -69,7 +69,7 @@ export async function fetchPublicEvent(eventId: string): Promise<{
             creatorName: users.name, // Select the creator's name
         })
         .from(events)
-        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
+        .innerJoin(users, eq(events.ownerId, users.id)) // Join users table with events using ownerId
         .where(eq(events.id, +eventId))
 
     return event

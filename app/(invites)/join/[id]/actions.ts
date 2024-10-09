@@ -27,8 +27,8 @@ export async function parseInviteUrl(encodedEventId: string) {
         .from(user_events)
         .where(
             and(
-                eq(user_events.event_id, +decodedEventId),
-                eq(user_events.user_id, user.id)
+                eq(user_events.eventId, +decodedEventId),
+                eq(user_events.userId, user.id)
             )
         )
 
@@ -53,8 +53,8 @@ export const acceptInvite = validatedAction(
         const { event_id } = data
 
         await db.insert(user_events).values({
-            user_id: user.id,
-            event_id,
+            userId: user.id,
+            eventId: event_id,
         })
 
         redirect(`/events/${event_id}`)

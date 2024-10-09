@@ -99,7 +99,7 @@ export default function ExpenseCard({
     description: Expense['description']
     amount: Expense['amount']
     currency: Expense['currency']
-    userId: Expense['user_id']
+    userId: Expense['userId']
     userName: string
 }) {
     const { user } = useUser()
@@ -113,7 +113,7 @@ export default function ExpenseCard({
             description,
             amount,
             currency,
-            user_id: userId,
+            userId,
         })
     }
 

@@ -2,29 +2,32 @@
 
 import { db } from '@/lib/db/drizzle'
 import { user_events, expenses } from '@/lib/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function removeEventMember(eventId: number, userId: number) {
     await db.transaction(async (tx) => {
-        // Remove user from the event
         await tx
-            .delete(user_events)
+            .update(user_events)
+            .set({
+                deletedAt: sql`CURRENT_TIMESTAMP`,
+            })
             .where(
                 and(
-                    eq(user_events.event_id, eventId),
-                    eq(user_events.user_id, userId)
+                    eq(user_events.eventId, eventId),
+                    eq(user_events.userId, userId)
                 )
             )
-        // Delete user's expenses for this event
+
         await tx
-            .delete(expenses)
+
+            .update(expenses)
+            .set({
+                deletedAt: sql`CURRENT_TIMESTAMP`,
+            })
             .where(
-                and(
-                    eq(expenses.event_id, eventId),
-                    eq(expenses.user_id, userId)
-                )
+                and(eq(expenses.eventId, eventId), eq(expenses.userId, userId))
             )
     })
 

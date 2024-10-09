@@ -25,15 +25,15 @@ export const addEvent = validatedActionWithUser(
                     title,
                     description,
                     date: new Date(date),
-                    owner_id: user.id,
+                    ownerId: user.id,
                 })
                 .returning()
 
             await db
                 .insert(user_events)
                 .values({
-                    user_id: user.id,
-                    event_id: event.id,
+                    userId: user.id,
+                    eventId: event.id,
                 })
                 .returning()
 

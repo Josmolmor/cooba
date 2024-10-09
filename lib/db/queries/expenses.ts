@@ -9,8 +9,8 @@ export type FetchExpense = {
     description: Expense['description']
     currency: Expense['currency']
     amount: Expense['amount']
-    eventId: Expense['event_id']
-    userId: Expense['user_id']
+    eventId: Expense['eventId']
+    userId: Expense['userId']
 }
 
 export async function fetchExpenses(
@@ -22,11 +22,11 @@ export async function fetchExpenses(
             description: expenses.description,
             currency: expenses.currency,
             amount: expenses.amount,
-            eventId: expenses.event_id,
-            userId: expenses.user_id,
+            eventId: expenses.eventId,
+            userId: expenses.userId,
         })
         .from(expenses)
-        .where(eq(expenses.event_id, +eventId))
+        .where(eq(expenses.eventId, +eventId))
         .orderBy(desc(expenses.createdAt))
 }
 
@@ -37,21 +37,21 @@ export const getEventExpenses = unstable_cache(
                 id: expenses.id,
                 amount: expenses.amount,
                 currency: expenses.currency,
-                userId: expenses.user_id,
+                userId: expenses.userId,
                 description: expenses.description,
                 createdAt: expenses.createdAt,
             })
             .from(expenses)
-            .where(sql`${expenses.event_id} = ${eventId}`)
+            .where(sql`${expenses.eventId} = ${eventId}`)
 
         const participantCountQuery = db
             .select({
-                count: sql`count(distinct ${user_events.user_id})`.as(
+                count: sql`count(distinct ${user_events.userId})`.as(
                     'participant_count'
                 ),
             })
             .from(user_events)
-            .where(sql`${user_events.event_id} = ${eventId}`)
+            .where(sql`${user_events.eventId} = ${eventId}`)
 
         const participantsQuery = db
             .select({
@@ -60,8 +60,8 @@ export const getEventExpenses = unstable_cache(
                 email: users.email,
             })
             .from(users)
-            .innerJoin(user_events, sql`${users.id} = ${user_events.user_id}`)
-            .where(sql`${user_events.event_id} = ${eventId}`)
+            .innerJoin(user_events, sql`${users.id} = ${user_events.userId}`)
+            .where(sql`${user_events.eventId} = ${eventId}`)
 
         const [expensesResult, participantCountResult, participantsResult] =
             await Promise.all([

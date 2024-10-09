@@ -39,7 +39,7 @@ export async function getUser(): Promise<User | null> {
 }
 
 export type EventMembers = {
-    eventId: UserEvent['event_id']
+    eventId: UserEvent['eventId']
     userId: User['id']
     userName: User['name']
     userEmail: User['email']
@@ -50,14 +50,14 @@ export async function getAllUsersEventsByEventId(
 ): Promise<EventMembers[]> {
     const usersEventsList = await db
         .select({
-            eventId: user_events.event_id,
-            userId: user_events.user_id,
+            eventId: user_events.eventId,
+            userId: user_events.userId,
             userName: users.name, // Adjust fields as needed
             userEmail: users.email, // Example additional field from the users table
         })
         .from(user_events)
-        .innerJoin(users, eq(user_events.user_id, users.id)) // Join user_events with users table
-        .where(eq(user_events.event_id, +id))
+        .innerJoin(users, eq(user_events.userId, users.id)) // Join user_events with users table
+        .where(eq(user_events.eventId, +id))
 
     return usersEventsList ?? []
 }
@@ -66,7 +66,7 @@ export async function getUserById(id: string): Promise<User | null> {
     const [user] = await db
         .select()
         .from(users)
-        .where(and(eq(users.id, id), isNull(users.deletedAt)))
+        .where(and(eq(users.id, +id), isNull(users.deletedAt)))
         .limit(1)
 
     if (!user) {

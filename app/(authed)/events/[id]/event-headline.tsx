@@ -23,7 +23,7 @@ export default function EventHeadline({
     title: Event['title']
     date: Event['date']
     ownerName: string
-    ownerId: Event['owner_id']
+    ownerId: Event['ownerId']
     totalsByCurrency: { [key: string]: number }
     eventMembers: EventMembers[]
 }) {

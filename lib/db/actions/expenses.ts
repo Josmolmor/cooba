@@ -25,8 +25,8 @@ export const addExpense = validatedActionWithUser(
             const [expense]: Expense[] = await db
                 .insert(expenses)
                 .values({
-                    event_id: +event_id,
-                    user_id: +user_id ?? user.id,
+                    eventId: +event_id,
+                    userId: +user_id ?? user.id,
                     description,
                     currency,
                     amount: parseFloat(amount).toString(),
@@ -63,7 +63,7 @@ export const editExpense = validatedActionWithUser(
             const [expense]: Expense[] = await db
                 .update(expenses)
                 .set({
-                    user_id: +user_id ?? user.id,
+                    userId: +user_id ?? user.id,
                     description,
                     currency,
                     amount: parseFloat(amount).toString(),
