@@ -32,7 +32,9 @@ export default function EmptyState({
             className={`flex flex-col items-center justify-center min-h-[320px] text-center p-4 bg-card border rounded-lg ${className}`}
         >
             <BoxSelect className="h-12 w-12 mb-4 text-muted-foreground" />
-            <h3 className="font-semibold text-lg mb-2">No {name}s yet</h3>
+            <h3 className="font-semibold text-lg mb-2">
+                No {name}s registered yet
+            </h3>
             <p className="text-sm mb-4 max-w-sm text-muted-foreground">
                 Get started by adding your first {name}. You can add as many as
                 you need.

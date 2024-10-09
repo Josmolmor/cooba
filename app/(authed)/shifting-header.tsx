@@ -6,13 +6,13 @@ import Link from 'next/link'
 export default function ShiftingHeader() {
     const shiftingPhrases = [
         'daily expenses',
-        'household bills',
+        'dinner bill',
+        'couple expenses',
+        'monthly rent',
         'next vacation',
         'grocery shopping',
-        'weekend getaway',
-        'home renovations',
+        'group trip',
         'birthday gifts',
-        'holiday parties',
     ]
 
     return (

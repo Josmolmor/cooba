@@ -72,7 +72,7 @@ export async function EventCard({
                                     )
                                 ) : (
                                     <p className="flex items-center gap-2 flex-wrap">
-                                        No expenses registered yet
+                                        No expenses registered
                                     </p>
                                 )}
                             </div>

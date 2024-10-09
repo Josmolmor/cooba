@@ -4,9 +4,16 @@ import React from 'react'
 import { useModal } from '@/context/modal/index'
 import ExpenseModalForm from '@/app/(authed)/dashboard/expenses/expense-modal'
 import EventModalForm from '@/app/(authed)/dashboard/events/event-modal'
+import EventMembersModal from '@/app/(authed)/dashboard/events/members/event-members-modal'
 
 const ModalWrapper = () => {
-    const { isOpen, modalVariant, eventPayload, expensePayload } = useModal()
+    const {
+        isOpen,
+        modalVariant,
+        eventPayload,
+        expensePayload,
+        eventMembersPayload,
+    } = useModal()
 
     if (!isOpen) return null
 
@@ -19,6 +26,14 @@ const ModalWrapper = () => {
             return <ExpenseModalForm />
         case 'edit_expense':
             return <ExpenseModalForm initialState={expensePayload} />
+        case 'view_event_members':
+            return (
+                <EventMembersModal
+                    eventId={eventMembersPayload?.eventId}
+                    ownerId={eventMembersPayload?.ownerId}
+                    initialMembers={eventMembersPayload?.initialMembers ?? []}
+                />
+            )
         default:
             return null
     }

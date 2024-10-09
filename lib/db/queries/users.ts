@@ -38,17 +38,16 @@ export async function getUser(): Promise<User | null> {
     return user
 }
 
+export type EventMembers = {
+    eventId: UserEvent['event_id']
+    userId: User['id']
+    userName: User['name']
+    userEmail: User['email']
+}
+
 export async function getAllUsersEventsByEventId(
     id: string
-): Promise<
-    | {
-          eventId: UserEvent['event_id']
-          userId: User['id']
-          userName: User['name']
-          userEmail: User['email']
-      }[]
-    | null
-> {
+): Promise<EventMembers[]> {
     const usersEventsList = await db
         .select({
             eventId: user_events.event_id,
@@ -60,11 +59,7 @@ export async function getAllUsersEventsByEventId(
         .innerJoin(users, eq(user_events.user_id, users.id)) // Join user_events with users table
         .where(eq(user_events.event_id, +id))
 
-    if (!usersEventsList) {
-        return null
-    }
-
-    return usersEventsList
+    return usersEventsList ?? []
 }
 
 export async function getUserById(id: string): Promise<User | null> {

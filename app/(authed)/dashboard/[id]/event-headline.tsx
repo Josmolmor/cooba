@@ -1,26 +1,31 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, CalendarDays, Edit, User2 } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Edit, User2, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDateForInputDatetimeLocal, isObjectEmpty } from '@/lib/utils'
-import { Event } from '@/lib/db/schema'
+import { Event, User } from '@/lib/db/schema'
 import { useModal } from '@/context/modal'
 import AnimatedCounter from '@/components/animated-counter'
+import { EventMembers } from '@/lib/db/queries/users'
 
 export default function EventHeadline({
     id,
     title,
     date,
     ownerName,
+    ownerId,
     totalsByCurrency,
+    eventMembers,
 }: {
     id: Event['id']
     title: Event['title']
     date: Event['date']
     ownerName: string
+    ownerId: Event['owner_id']
     totalsByCurrency: { [key: string]: number }
+    eventMembers: EventMembers[]
 }) {
     const { openModal } = useModal()
 
@@ -32,29 +37,44 @@ export default function EventHeadline({
         })
     }
 
+    const displayEventMembers = () => {
+        openModal('view_event_members', null, null, {
+            ownerId,
+            initialMembers: eventMembers,
+        })
+    }
+
     return (
         <>
             <div className="flex items-center justify-between gap-4 flex-wrap">
-                <Link
-                    href="/dashboard"
-                    className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 self-start"
-                >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Events
-                </Link>
-                <Button onClick={handleClickEditButton} className="sm:w-auto">
-                    <>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit event
-                    </>
+                <Button variant="link" asChild>
+                    <Link href="/dashboard">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        All events
+                    </Link>
                 </Button>
+                <div className="flex gap-4">
+                    <Button
+                        onClick={handleClickEditButton}
+                        className="sm:w-auto"
+                    >
+                        <>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit event
+                        </>
+                    </Button>
+                    <Button variant="secondary" onClick={displayEventMembers}>
+                        <Users className="mr-2 h-4 w-4" />
+                        View members
+                    </Button>
+                </div>
             </div>
 
             <Card className="mb-4">
                 <CardHeader className="pb-6">
                     <div className="flex justify-between items-start flex-wrap gap-8">
                         <div className="flex flex-col gap-2">
-                            <CardTitle className="text-2xl">{title}</CardTitle>
+                            <CardTitle className="text-4xl">{title}</CardTitle>
                             <div className="text-sm flex items-center text-muted-foreground gap-4">
                                 <span className="flex items-center">
                                     <CalendarDays className="mr-2" size={12} />

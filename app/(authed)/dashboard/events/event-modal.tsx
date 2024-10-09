@@ -32,7 +32,7 @@ export default function EventModalForm({
     return (
         <Dialog open={isOpen} onOpenChange={toggleModal}>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader className="mb-4">
+                <DialogHeader>
                     <DialogTitle>
                         {initialState ? 'Edit' : 'Add new'} event
                     </DialogTitle>
