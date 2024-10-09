@@ -27,8 +27,6 @@ export default function SecuritySection() {
         // client-side values in the inputs. So instead, we use an event handler
         // which calls the action. You must wrap direct calls with startTranstion.
         // When you use the `action` prop it automatically handles that for you.
-        // Another option here is to persist the values to local storage. I might
-        // explore alternative options.
         startTransition(() => {
             passwordAction(new FormData(event.currentTarget))
         })

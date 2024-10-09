@@ -8,7 +8,9 @@ import {
     CreditCard,
     Edit,
     Icon,
+    Minus,
     Plane,
+    Plus,
     ShoppingCart,
     User,
 } from 'lucide-react'
@@ -20,6 +22,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
+import { useUser } from '@/lib/auth'
 
 const categoryIcons = {
     general: Banknote,
@@ -57,6 +60,9 @@ export default function ExpenseCard({
     userId: Expense['user_id']
     userName: string
 }) {
+    const { user } = useUser()
+    const isUser = user?.name === userName
+
     const { openModal } = useModal()
 
     const handleClickEditButton = () => {
@@ -83,7 +89,10 @@ export default function ExpenseCard({
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold flex gap-1 items-baseline">
-                        {(+amount).toFixed(2)}
+                        <span className={`flex items-center gap-1`}>
+                            {isUser ? <Plus size={14} /> : <Minus size={14} />}
+                            {(+amount).toFixed(2)}
+                        </span>
                         <span className="text-muted-foreground text-sm font-normal">
                             {currency}
                         </span>
@@ -95,9 +104,9 @@ export default function ExpenseCard({
             </CardHeader>
             <CardContent className="">
                 <CardDescription>
-                    {description}
-                    <div className="flex justify-between items-baseline">
-                        <div className="flex items-center text-sm">
+                    <p>{description}</p>
+                    <div className={`flex justify-between items-baseline mt-2`}>
+                        <div className={`flex items-center text-sm`}>
                             <User className="h-3 w-3 mr-1" />
                             {userName ? <span>{userName}</span> : null}
                         </div>

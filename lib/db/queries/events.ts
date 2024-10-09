@@ -41,9 +41,12 @@ export async function fetchEvent(eventId: string) {
             id: events.id,
             title: events.title,
             date: events.date,
+            ownerId: events.owner_id,
+            creatorName: users.name, // Select the creator's name
         })
         .from(events)
         .innerJoin(user_events, eq(events.id, user_events.event_id))
+        .innerJoin(users, eq(events.owner_id, users.id)) // Join users table with events using owner_id
         .where(and(eq(user_events.user_id, user.id), eq(events.id, +eventId)))
         .orderBy(desc(events.updatedAt))
 

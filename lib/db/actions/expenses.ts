@@ -5,6 +5,7 @@ import { validatedActionWithUser } from '@/lib/auth/middleware'
 import { db } from '@/lib/db/drizzle'
 import { Expense, expenses, users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
+import { revalidateTag } from 'next/cache'
 
 const newExpenseSchema = z.object({
     description: z.string().min(3).max(255),
@@ -32,6 +33,7 @@ export const addExpense = validatedActionWithUser(
                 })
                 .returning()
 
+            revalidateTag('eventExpenses')
             return {
                 success: 'New expense added successfully',
                 expense,
@@ -69,6 +71,7 @@ export const editExpense = validatedActionWithUser(
                 .where(eq(expenses.id, +id))
                 .returning()
 
+            revalidateTag('eventExpenses')
             return {
                 success: 'Expense edited successfully',
                 expense,

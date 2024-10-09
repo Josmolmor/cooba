@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, CalendarDays, Edit } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Edit, User2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDateForInputDatetimeLocal, isObjectEmpty } from '@/lib/utils'
@@ -13,11 +13,13 @@ export default function EventHeadline({
     id,
     title,
     date,
+    ownerName,
     totalsByCurrency,
 }: {
     id: Event['id']
     title: Event['title']
     date: Event['date']
+    ownerName: string
     totalsByCurrency: { [key: string]: number }
 }) {
     const { openModal } = useModal()
@@ -53,9 +55,15 @@ export default function EventHeadline({
                     <div className="flex justify-between items-start flex-wrap gap-8">
                         <div className="flex flex-col gap-2">
                             <CardTitle className="text-2xl">{title}</CardTitle>
-                            <div className="text-sm flex items-center">
-                                <CalendarDays className="mr-1 h-4 w-4" />
-                                {new Date(date).toLocaleDateString(['en'])}
+                            <div className="text-sm flex items-center text-muted-foreground gap-4">
+                                <span className="flex items-center">
+                                    <CalendarDays className="mr-2" size={12} />
+                                    {new Date(date).toLocaleDateString(['en'])}
+                                </span>
+                                <span className="flex items-center">
+                                    <User2 className="mr-1.5" size={12} />
+                                    {ownerName}
+                                </span>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:text-right">

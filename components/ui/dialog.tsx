@@ -38,7 +38,7 @@ const DialogContent = React.forwardRef<
         <DialogPrimitive.Content
             ref={ref}
             className={cn(
-                'border fixed z-50 bottom-0 bg-card text-card-foreground p-6 min-h-[35dvh] w-[100dvw] rounded-t-lg ' +
+                'border fixed z-50 bottom-0 bg-card text-card-foreground p-6 min-h-[20dvh] w-[100dvw] rounded-t-lg ' +
                     'sm:min-h-[auto] sm:bottom-auto sm:rounded-lg sm:shadow-lg sm:left-[50%] sm:top-[50%] sm:w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] ' +
                     'duration-350 animate-in slide-in-from-bottom sm:animate-none',
                 className
@@ -75,7 +75,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         className={cn(
-            'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
+            'mt-4 flex flex-col gap-2 justify-start sm:flex-row sm:justify-end',
             className
         )}
         {...props}

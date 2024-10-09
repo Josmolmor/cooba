@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Edit, Loader2, Lock } from 'lucide-react'
 import { useActionState } from 'react'
 import { ActionState } from '@/lib/auth/middleware'
-import { editUser } from '@/app/(authed)/profile/actions'
 import { useUser } from '@/lib/auth'
 import { Card } from '@/components/ui/card'
 import { deleteAccount, updatePassword } from '@/app/(login)/actions'
+import { editUser } from '@/lib/db/actions/users'
 
 const ProfileForm = ({ className }: { className?: string }) => {
     const { user } = useUser()

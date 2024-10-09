@@ -4,7 +4,7 @@ import { FetchExpense, fetchExpenses } from '@/lib/db/queries/expenses'
 import EmptyState from '@/components/empty-state'
 import EventHeadline from '@/app/(authed)/dashboard/[id]/event-headline'
 import { getAllUsersEventsByEventId, getUser } from '@/lib/db/queries/users'
-import ExpenseCard from '@/app/(authed)/dashboard/[id]/expense'
+import ExpenseCard from '@/app/(authed)/dashboard/[id]/expense-card'
 
 type Totals = {
     [key: string]: number // Key is the currency, value is the total amount
@@ -35,7 +35,6 @@ export default async function EventPage({
 }: {
     params: { id: string }
 }) {
-    const user = await getUser()
     if (!params.id) redirect('/dashboard')
 
     const event = await fetchEvent(params.id)
@@ -50,6 +49,7 @@ export default async function EventPage({
                 id={+params.id}
                 title={event.title}
                 date={event.date}
+                ownerName={event.creatorName ?? ''}
                 totalsByCurrency={totalsByCurrency(expenses)}
             />
 
