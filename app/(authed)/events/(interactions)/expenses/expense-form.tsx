@@ -24,7 +24,7 @@ export default function ExpenseForm({
     state: {
         payload?: ExpensePayload
         error?: string
-        success?: boolean
+        success?: string
     }
     pending: boolean
     className?: string

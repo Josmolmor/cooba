@@ -62,7 +62,7 @@ export const editEvent = validatedActionWithUser(
 
         try {
             // Create a new event
-            const expense: Expense = await db
+            const [event]: Event[] = await db
                 .update(events)
                 .set({
                     title,
@@ -74,7 +74,7 @@ export const editEvent = validatedActionWithUser(
 
             return {
                 success: 'Event edited successfully',
-                expense,
+                event,
             }
         } catch (error) {
             return { error: `Failed to edit event: ${error}` }
@@ -85,7 +85,7 @@ export const editEvent = validatedActionWithUser(
 export const disableEvent = async (event_id: number) => {
     try {
         // Create a new event
-        const event: Event = await db
+        const [event]: Event[] = await db
             .update(events)
             .set({
                 deletedAt: sql`CURRENT_TIMESTAMP`,
