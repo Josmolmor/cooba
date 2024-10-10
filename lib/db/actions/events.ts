@@ -5,6 +5,7 @@ import { validatedActionWithUser } from '@/lib/auth/middleware'
 import { db } from '@/lib/db/drizzle'
 import { Event, events, Expense, user_events } from '@/lib/db/schema'
 import { eq, sql } from 'drizzle-orm'
+import { revalidatePath } from 'next/cache'
 
 const newEventSchema = z.object({
     title: z.string().min(3).max(255),
@@ -84,7 +85,7 @@ export const editEvent = validatedActionWithUser(
 export const disableEvent = async (event_id: number) => {
     try {
         // Create a new event
-        const expense: Expense = await db
+        const event: Event = await db
             .update(events)
             .set({
                 deletedAt: sql`CURRENT_TIMESTAMP`,
@@ -92,9 +93,10 @@ export const disableEvent = async (event_id: number) => {
             .where(eq(events.id, event_id))
             .returning()
 
+        revalidatePath('/events')
         return {
             success: 'Event disabled successfully',
-            expense,
+            event,
         }
     } catch (error) {
         return { error: `Failed to disable event: ${error}` }

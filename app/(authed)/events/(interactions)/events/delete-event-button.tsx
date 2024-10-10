@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
+import { Loader2, Trash2 } from 'lucide-react'
 import { useUser } from '@/lib/auth'
 import { disableEvent } from '@/lib/db/actions/events'
 import {
@@ -29,13 +29,16 @@ export default function DeleteEventButton({
 }) {
     const { user } = useUser()
     const [isOpen, setIsOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     // button visible only for creator of event
     if (user?.id !== ownerId) return null
 
     const handleDelete = async () => {
-        await disableEvent(eventId)
-        setIsOpen(false)
+        const { success, error, event } = await disableEvent(eventId)
+        if (success) {
+            setIsOpen(false)
+        }
     }
 
     return (
@@ -43,7 +46,11 @@ export default function DeleteEventButton({
             <DialogTrigger asChild>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <Button className="p-2.5 w-auto" variant="outline">
+                        <Button
+                            onClick={() => setIsOpen(true)}
+                            className="p-2.5 w-auto"
+                            variant="outline"
+                        >
                             <Trash2 size={16} />
                         </Button>
                     </TooltipTrigger>
@@ -61,12 +68,27 @@ export default function DeleteEventButton({
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="mt-4 flex-col gap-2 sm:flex-row">
-                    <Button variant="outline" onClick={() => setIsOpen(false)}>
+                    <Button
+                        disabled={isLoading}
+                        variant="outline"
+                        onClick={() => setIsOpen(false)}
+                    >
                         Cancel
                     </Button>
-                    <Button variant="destructive" onClick={handleDelete}>
-                        Delete
-                    </Button>
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                            Deleting...
+                        </>
+                    ) : (
+                        <Button
+                            disabled={isLoading}
+                            variant="destructive"
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </Button>
+                    )}
                 </DialogFooter>
             </DialogContent>
         </Dialog>

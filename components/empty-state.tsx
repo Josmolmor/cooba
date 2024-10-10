@@ -3,12 +3,15 @@
 import { Button } from '@/components/ui/button'
 import { BoxSelect, Edit, Plus } from 'lucide-react'
 import { useModal } from '@/context/modal'
+import { EventMembers } from '@/lib/db/queries/users'
 
 export default function EmptyState({
     name = 'event',
+    members = [],
     className,
 }: {
     name: string
+    members: EventMembers[]
     className?: string
 }) {
     const { openModal } = useModal()
@@ -16,7 +19,9 @@ export default function EmptyState({
     const handleEmptyStateButtonClick = () => {
         switch (name) {
             case 'expense': {
-                openModal('new_expense')
+                openModal('new_expense', undefined, undefined, undefined, {
+                    members,
+                })
                 break
             }
             case 'event':

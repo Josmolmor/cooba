@@ -156,7 +156,15 @@ export default async function EventPage({
                         )
                     )
                 ) : (
-                    <EmptyState className="col-span-full" name={'expense'} />
+                    <EmptyState
+                        className="col-span-full"
+                        name={'expense'}
+                        members={
+                            usersList.status === 'fulfilled'
+                                ? usersList.value
+                                : []
+                        }
+                    />
                 )}
             </div>
         </div>
