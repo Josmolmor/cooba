@@ -20,7 +20,7 @@ export default function EventModalForm({
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
         initialState ? editEvent : addEvent,
-        { payload: initialState, error: '' } ?? { error: '' }
+        initialState ? { payload: initialState, error: '' } : { error: '' }
     )
 
     useEffect(() => {
