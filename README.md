@@ -1,12 +1,20 @@
-# Project Title
+# Cooba
 
-A brief description of your project, its purpose, and what it aims to achieve.
+Effortlessly split your expenses with anyone
 
-## Functionality
+## Features
 
--   **Feature 1**: Describe what this feature does and how it benefits the user.
--   **Feature 2**: Explain another feature and its importance.
--   **Feature 3**: Continue detailing additional features as necessary.
+-   **Create events**: organize your expenses per event
+-   **Add expenses to events**: track your expenses anytime
+-   **Share events with anyone**: share events and split the expenses
+
+## Tech stack
+
+-   Framework: [Next](https://nextjs.org/)
+-   Database: [Postgres](https://www.postgresql.org/)
+-   ORM: [Drizzle](https://orm.drizzle.team/)
+-   UI Library: [shadcn](https://ui.shadcn.com/)
+-   Styles: [Tailwind](https://tailwindcss.com/)
 
 ## Installation
 
@@ -18,15 +26,11 @@ To install this project, follow these steps:
     ```
 2. **Navigate to the project directory**:
     ```bash
-    cd yourproject
+    cd cooba
     ```
 3. **Install dependencies**:
     ```bash
     npm install
-    ```
-    or for Python projects:
-    ```bash
-    pip install -r requirements.txt
     ```
 
 ## Usage
