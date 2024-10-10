@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1727567478415,
-      "tag": "0000_light_thunderball",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1727640978732,
-      "tag": "0001_bitter_sir_ram",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1727708012305,
-      "tag": "0002_puzzling_cerise",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1727779345911,
-      "tag": "0003_clumsy_silhouette",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1728256744456,
-      "tag": "0004_grey_tiger_shark",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1728412665449,
-      "tag": "0005_material_ravenous",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1728517253214,
-      "tag": "0006_moaning_quentin_quire",
+      "when": 1728571248332,
+      "tag": "0000_rare_jane_foster",
       "breakpoints": true
     }
   ]
