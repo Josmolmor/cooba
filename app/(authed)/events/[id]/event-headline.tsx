@@ -53,7 +53,7 @@ export default function EventHeadline({
         openModal('edit_event', {
             id,
             title,
-            date: formatDateForInputDatetimeLocal(new Date(date)),
+            date,
         })
     }
 

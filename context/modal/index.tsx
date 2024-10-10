@@ -4,10 +4,7 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 import { Expense, Event, User } from '@/lib/db/schema'
 import { EventMembers } from '@/lib/db/queries/users'
 
-export type EventPayload = Pick<
-    Event,
-    'id' | 'title' | 'date' | 'ownerId'
-> | null
+export type EventPayload = Pick<Event, 'id' | 'title' | 'date'> | null
 
 export type NewExpensePayload = { members: EventMembers[] }
 

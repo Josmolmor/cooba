@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { Textarea } from '@/components/ui/textarea'
+import { formatDateForInputDatetimeLocal } from '@/lib/utils'
 
 export default function EventForm({
     formAction,
@@ -51,7 +52,11 @@ export default function EventForm({
                     name="date"
                     type="datetime-local"
                     required
-                    defaultValue={state.payload?.date ?? ''}
+                    defaultValue={
+                        formatDateForInputDatetimeLocal(
+                            new Date(state.payload?.date)
+                        ) ?? ''
+                    }
                 />
             </div>
             <Input type="hidden" id="id" name="id" defaultValue={params.id} />

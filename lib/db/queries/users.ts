@@ -40,7 +40,7 @@ export async function getUser(): Promise<User | null> {
 
 export type EventMembers = {
     eventId: UserEvent['eventId']
-    userId: User['id']
+    userId: UserEvent['userId']
     userName: User['name']
     userEmail: User['email']
     deletedAt: UserEvent['deletedAt']

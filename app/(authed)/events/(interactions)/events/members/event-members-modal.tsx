@@ -70,12 +70,18 @@ export default function EventMembersModal({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() =>
+                                                member.eventId &&
+                                                member.userId &&
                                                 handleRemoveMember(
                                                     member.eventId,
                                                     member.userId
                                                 )
                                             }
-                                            disabled={isPending}
+                                            disabled={
+                                                isPending ||
+                                                member.eventId === null ||
+                                                member.userId === null
+                                            }
                                         >
                                             <Trash2 size={14} />
                                         </Button>
