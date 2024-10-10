@@ -8,9 +8,9 @@ const AnimatedCounter = ({ targetValue }: { targetValue: number }) => {
     useEffect(() => {
         const duration = targetValue * 5
         const stepTime = Math.abs(duration / targetValue)
-        let startTime = null
+        let startTime = 0
 
-        const animateCount = (timestamp) => {
+        const animateCount = (timestamp: number) => {
             if (!startTime) startTime = timestamp
             const progress = timestamp - startTime
 
