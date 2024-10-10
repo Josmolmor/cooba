@@ -26,7 +26,7 @@ export const addExpense = validatedActionWithUser(
                 .insert(expenses)
                 .values({
                     eventId: +event_id,
-                    userId: +user_id ?? user.id,
+                    userId: user_id ? +user_id : user.id,
                     description,
                     currency,
                     amount: parseFloat(amount).toString(),
