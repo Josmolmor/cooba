@@ -1,6 +1,6 @@
 # Cooba
 
-Effortlessly split your expenses with anyone
+Effortlessly split your expenses with anyone. Developed with Next 15 and React 19 (canary versions at the time of developing)
 
 ## Features
 
