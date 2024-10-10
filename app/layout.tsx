@@ -34,7 +34,7 @@ export const metadata: Metadata = {
         title: 'Cooba - Split Your Expenses Effortlessly',
         description:
             'Effortlessly split your expenses with Cooba. Manage your finances with ease.',
-        url: 'https://cooba.com',
+        url: 'https://cooba-six.vercel.app/',
         siteName: 'Cooba',
         images: [
             {
