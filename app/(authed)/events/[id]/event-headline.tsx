@@ -94,7 +94,7 @@ export default function EventHeadline({
                 <CardHeader className="pb-6">
                     <div className="flex justify-between items-start flex-wrap gap-8">
                         <div className="flex flex-col gap-2">
-                            <CardTitle className="text-4xl font-semibold">
+                            <CardTitle className="text-3xl font-semibold">
                                 {title}
                             </CardTitle>
                             <div className="text-sm flex items-center text-muted-foreground gap-4 flex-wrap">

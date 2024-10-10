@@ -36,6 +36,7 @@ export default function EventForm({
             <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
+                    className="max-h-[30dvh]"
                     id="description"
                     name="description"
                     placeholder="Event description"

@@ -29,8 +29,16 @@ const CopyInvitationLinkToClipboardButton: FC<
 
     return (
         <Button onClick={handleCopyClick} className="flex gap-2 sm:w-auto">
-            {copied ? <Check size={14} /> : <Copy size={14} />}
-            {buttonLabel}
+            {copied ? (
+                <>
+                    <Check size={14} />
+                    Copied to clipboard
+                </>
+            ) : (
+                <>
+                    <Copy size={14} /> {buttonLabel}
+                </>
+            )}
         </Button>
     )
 }

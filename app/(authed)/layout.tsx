@@ -58,7 +58,7 @@ function Header() {
                                         className="flex w-full items-center"
                                     >
                                         <Home className="mr-2 h-4 w-4" />
-                                        <span>Dashboard</span>
+                                        <span>Events</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer">

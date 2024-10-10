@@ -59,9 +59,6 @@ const categoryIcons: Record<Category, typeof Banknote> = {
     music: Music,
 }
 
-const slideInClassnames = (index: number) =>
-    `slide-in-from-bottom-${index * 16}`
-
 export const categoryColors: Record<Category, string> = {
     general:
         'bg-purple-100 text-purple-600 dark:bg-purple-800/70 dark:text-purple-300',
@@ -89,13 +86,13 @@ export const categoryColors: Record<Category, string> = {
 
 export default function ExpenseCard({
     id,
+    index,
     description,
     amount,
     currency,
-    userName,
     userId,
+    userName,
     deletedAt,
-    index,
     members,
 }: {
     id: Expense['id']
@@ -132,9 +129,7 @@ export default function ExpenseCard({
         'bg-foreground text-background dark:bg-foreground dark:text-background'
 
     return (
-        <Card
-            className={`animate-in duration-700 ${slideInClassnames(index + 1)} fade-in-0 ${deletedAt ? 'opacity-50' : ''}`}
-        >
+        <Card className={`animate-blur ${deletedAt ? 'opacity-50' : ''}`}>
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-semibold flex gap-1 items-baseline">
