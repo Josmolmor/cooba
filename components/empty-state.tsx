@@ -11,7 +11,7 @@ export default function EmptyState({
     className,
 }: {
     name: string
-    members: EventMembers[]
+    members?: EventMembers[]
     className?: string
 }) {
     const { openModal } = useModal()
