@@ -60,7 +60,7 @@ export const acceptInvite = validatedAction(
         if (!eventUsers.length) {
             await db.insert(user_events).values({
                 userId: user.id,
-                eventId: event_id,
+                eventId: +event_id,
             })
             return redirect(`/events/${event_id}`)
         }
