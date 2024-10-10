@@ -20,7 +20,7 @@ export default function ExpenseModalForm({
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
         (initialState as ExpensePayload)?.id ? editExpense : addExpense,
-        { payload: initialState, error: '' } ?? { error: '' }
+        initialState ? { payload: initialState, error: '' } : { error: '' }
     )
 
     useEffect(() => {
