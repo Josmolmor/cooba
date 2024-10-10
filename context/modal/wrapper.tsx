@@ -13,6 +13,7 @@ const ModalWrapper = () => {
         eventPayload,
         expensePayload,
         eventMembersPayload,
+        newExpensePayload,
     } = useModal()
 
     if (!isOpen) return null
@@ -23,7 +24,7 @@ const ModalWrapper = () => {
         case 'edit_event':
             return <EventModalForm initialState={eventPayload} />
         case 'new_expense':
-            return <ExpenseModalForm />
+            return <ExpenseModalForm initialState={newExpensePayload} />
         case 'edit_expense':
             return <ExpenseModalForm initialState={expensePayload} />
         case 'view_event_members':

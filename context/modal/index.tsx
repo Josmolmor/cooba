@@ -8,10 +8,15 @@ export type EventPayload = Pick<
     Event,
     'id' | 'title' | 'date' | 'ownerId'
 > | null
-export type ExpensePayload = Pick<
-    Expense,
-    'id' | 'description' | 'amount' | 'currency' | 'userId'
-> | null
+
+export type NewExpensePayload = { members: EventMembers[] }
+
+export type ExpensePayload =
+    | (Pick<
+          Expense,
+          'id' | 'description' | 'amount' | 'currency' | 'userId'
+      > & { members: EventMembers[] })
+    | null
 
 export type EventMembersPayload = {
     ownerId: Event['ownerId']
@@ -32,13 +37,15 @@ type ModalContextType = {
         variant: ModalVariant,
         eventPayload?: EventPayload,
         expensePayload?: ExpensePayload,
-        eventMembersPayload?: EventMembersPayload
+        eventMembersPayload?: EventMembersPayload,
+        newExpensePayload?: NewExpensePayload
     ) => void
     closeModal: () => void
     toggleModal: () => void
     eventPayload: EventPayload
     expensePayload: ExpensePayload
     eventMembersPayload: EventMembersPayload
+    newExpensePayload: NewExpensePayload
 }
 
 const ModalContext = createContext<ModalContextType>({
@@ -50,6 +57,7 @@ const ModalContext = createContext<ModalContextType>({
     eventPayload: null,
     expensePayload: null,
     eventMembersPayload: null,
+    newExpensePayload: { members: [] },
 })
 
 export const useModal = (): ModalContextType => {
@@ -67,12 +75,15 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [expensePayload, setExpensePayload] = useState<ExpensePayload>(null)
     const [eventMembersPayload, setEventMembersPayload] =
         useState<EventMembersPayload>(null)
+    const [newExpensePayload, setNewExpensePayload] =
+        useState<NewExpensePayload>({ members: [] })
 
     const openModal = (
         variant: ModalVariant = 'new_event',
         eventPayload: EventPayload = null,
         expensePayload: ExpensePayload = null,
-        eventMembersPayload: EventMembersPayload = null
+        eventMembersPayload: EventMembersPayload = null,
+        newExpensePayload: NewExpensePayload = { members: [] }
     ) => {
         if (eventPayload) {
             setEventPayload(eventPayload)
@@ -84,6 +95,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
         if (eventMembersPayload) {
             setEventMembersPayload(eventMembersPayload)
+        }
+
+        if (newExpensePayload) {
+            setNewExpensePayload(newExpensePayload)
         }
 
         setModalVariant(variant)
@@ -109,6 +124,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                 eventPayload,
                 expensePayload,
                 eventMembersPayload,
+                newExpensePayload,
             }}
         >
             {children}

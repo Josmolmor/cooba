@@ -1,14 +1,29 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, CalendarDays, Edit, User2, Users } from 'lucide-react'
+import {
+    ArrowLeft,
+    CalendarDays,
+    Edit,
+    User2,
+    Users,
+    Text,
+    Check,
+    Copy,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDateForInputDatetimeLocal, isObjectEmpty } from '@/lib/utils'
-import { Event, User } from '@/lib/db/schema'
+import { Event } from '@/lib/db/schema'
 import { useModal } from '@/context/modal'
 import AnimatedCounter from '@/components/animated-counter'
 import { EventMembers } from '@/lib/db/queries/users'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export default function EventHeadline({
     id,
@@ -27,8 +42,8 @@ export default function EventHeadline({
     ownerName: string
     ownerId: Event['ownerId']
     totals: {
-        totalsWithDeleted: [key: string]
-        totalsWithoutDeleted: [key: string]
+        totalsWithDeleted: { [key: string]: number }
+        totalsWithoutDeleted: { [key: string]: number }
     }
     eventMembers: EventMembers[]
 }) {
@@ -87,11 +102,50 @@ export default function EventHeadline({
                                     <CalendarDays className="mr-2" size={12} />
                                     {new Date(date).toLocaleDateString(['en'])}
                                 </span>
-                                <span className="flex items-center">
-                                    <User2 className="mr-1.5" size={12} />
-                                    {ownerName}
-                                </span>
-                                <span>{description}</span>
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <span className="flex items-center">
+                                            <User2
+                                                className="mr-1.5"
+                                                size={12}
+                                            />
+                                            {ownerName}
+                                        </span>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Event owner</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                                {description ? (
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <span className="flex items-center">
+                                                <Text
+                                                    className="mr-1.5"
+                                                    size={12}
+                                                />
+                                                {description}
+                                            </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Event description</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                ) : null}
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <span className="flex items-center">
+                                            <Users
+                                                className="mr-1.5"
+                                                size={12}
+                                            />
+                                            {eventMembers.length}
+                                        </span>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Number of users</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:text-right">

@@ -7,10 +7,6 @@ import { getAllUsersEventsByEventId } from '@/lib/db/queries/users'
 import ExpenseCard from '@/app/(authed)/events/[id]/expense-card'
 import NewExpenseButton from './new-expense-button'
 
-type Totals = {
-    [key: string]: number // Key is the currency, value is the total amount
-}
-
 // const totalsByCurrency = (expenses: FetchExpense[]): Totals => {
 //     const totals = expenses.reduce<Totals>((acc, expense) => {
 //         const { amount, currency } = expense
@@ -32,31 +28,37 @@ type Totals = {
 // }
 
 const totalsByCurrency = (expenses: FetchExpense[]) => {
-    const totalsWithoutDeleted = expenses.reduce<Totals>((acc, expense) => {
-        const { amount, currency, deletedAt } = expense
-        const amountNumber = parseFloat(amount)
+    const totalsWithoutDeleted = expenses.reduce<{ [key: string]: number }>(
+        (acc, expense) => {
+            const { amount, currency, deletedAt } = expense
+            const amountNumber = parseFloat(amount)
 
-        if (!deletedAt) {
-            // Only include expenses without deletedAt
+            if (!deletedAt) {
+                // Only include expenses without deletedAt
+                if (!acc[currency]) {
+                    acc[currency] = 0
+                }
+                acc[currency] += amountNumber
+            }
+            return acc
+        },
+        {}
+    )
+
+    const totalsWithDeleted = expenses.reduce<{ [key: string]: number }>(
+        (acc, expense) => {
+            const { amount, currency } = expense
+            const amountNumber = parseFloat(amount)
+
             if (!acc[currency]) {
                 acc[currency] = 0
             }
+
             acc[currency] += amountNumber
-        }
-        return acc
-    }, {})
-
-    const totalsWithDeleted = expenses.reduce<Totals>((acc, expense) => {
-        const { amount, currency } = expense
-        const amountNumber = parseFloat(amount)
-
-        if (!acc[currency]) {
-            acc[currency] = 0
-        }
-
-        acc[currency] += amountNumber
-        return acc
-    }, {})
+            return acc
+        },
+        {}
+    )
 
     // Convert the totals objects to arrays and sort them
     const sortedTotalsWithoutDeleted = Object.entries(
@@ -70,10 +72,10 @@ const totalsByCurrency = (expenses: FetchExpense[]) => {
     return {
         totalsWithoutDeleted: Object.fromEntries(
             sortedTotalsWithoutDeleted
-        ) as Totals,
-        totalsWithDeleted: Object.fromEntries(
-            sortedTotalsWithDeleted
-        ) as Totals,
+        ) as { [key: string]: number },
+        totalsWithDeleted: Object.fromEntries(sortedTotalsWithDeleted) as {
+            [key: string]: number
+        },
     }
 }
 
@@ -113,8 +115,8 @@ export default async function EventPage({
 
             <div className="flex items-center justify-between flex-wrap gap-4">
                 <h2 className="text-2xl font-semibold">Expenses</h2>
-                {expenses.status === 'fulfilled' && expenses.value.length ? (
-                    <NewExpenseButton />
+                {usersList.status === 'fulfilled' ? (
+                    <NewExpenseButton members={usersList.value} />
                 ) : null}
             </div>
             <div
@@ -149,6 +151,7 @@ export default async function EventPage({
                                     )?.userName ?? ''
                                 }
                                 deletedAt={deletedAt}
+                                members={usersList.value}
                             />
                         )
                     )

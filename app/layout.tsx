@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         type: 'website',
     },
     twitter: {
-        card: 'summary_large_image',
+        card: 'summary_large_image', // or 'summary' for a smaller card
         title: 'Cooba - Split Your Expenses Effortlessly',
         description:
             'Effortlessly split your expenses with Cooba. Manage your finances with ease.',

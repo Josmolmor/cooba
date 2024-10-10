@@ -13,6 +13,11 @@ import { useState, useTransition } from 'react'
 import { removeEventMember } from './actions'
 import { EventMembers } from '@/lib/db/queries/users'
 import { useUser } from '@/lib/auth'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 interface EventMembersModalProps {
     ownerId?: number | null
@@ -59,19 +64,26 @@ export default function EventMembersModal({
                             </span>
                             {(ownerId === user?.id ||
                                 ownerId !== member.userId) && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                        handleRemoveMember(
-                                            member.eventId,
-                                            member.userId
-                                        )
-                                    }
-                                    disabled={isPending}
-                                >
-                                    <Trash2 size={14} />
-                                </Button>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() =>
+                                                handleRemoveMember(
+                                                    member.eventId,
+                                                    member.userId
+                                                )
+                                            }
+                                            disabled={isPending}
+                                        >
+                                            <Trash2 size={14} />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Disable member from event</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             )}
                         </li>
                     ))}

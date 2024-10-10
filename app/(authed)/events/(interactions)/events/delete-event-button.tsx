@@ -14,6 +14,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export default function DeleteEventButton({
     ownerId,
@@ -36,9 +41,16 @@ export default function DeleteEventButton({
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="p-2.5 w-auto" variant="outline">
-                    <Trash2 size={16} />
-                </Button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button className="p-2.5 w-auto" variant="outline">
+                            <Trash2 size={16} />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Disable event</p>
+                    </TooltipContent>
+                </Tooltip>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

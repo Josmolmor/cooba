@@ -36,6 +36,8 @@ import {
 import { useUser } from '@/lib/auth'
 import { formatCurrency } from '@/lib/utils/currency'
 import { Category, detectCategory } from '@/lib/utils/expense-categories'
+import { Tooltip, TooltipTrigger, TooltipContent } from 'components/ui/tooltip'
+import { EventMembers } from '@/lib/db/queries/users'
 
 const categoryIcons: Record<Category, typeof Banknote> = {
     general: Banknote,
@@ -94,6 +96,7 @@ export default function ExpenseCard({
     userId,
     deletedAt,
     index,
+    members,
 }: {
     id: Expense['id']
     index: number
@@ -103,6 +106,7 @@ export default function ExpenseCard({
     userId: Expense['userId']
     userName: string
     deletedAt: Expense['deletedAt']
+    members: EventMembers[]
 }) {
     const { user } = useUser()
     const isUser = user?.name === userName
@@ -116,6 +120,7 @@ export default function ExpenseCard({
             amount,
             currency,
             userId,
+            members,
         })
     }
 
@@ -153,17 +158,28 @@ export default function ExpenseCard({
                             <User className="h-3 w-3 mr-2" />
                             {userName ? <span>{userName}</span> : null}
                         </div>
-                        <Button
-                            disabled={!!deletedAt}
-                            variant="ghost"
-                            size="sm"
-                            onClick={
-                                deletedAt ? undefined : handleClickEditButton
-                            }
-                            className="px-2"
-                        >
-                            <Edit className="h-4 w-4" />
-                        </Button>
+                        {deletedAt ? null : (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        disabled={!!deletedAt}
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={
+                                            deletedAt
+                                                ? undefined
+                                                : handleClickEditButton
+                                        }
+                                        className="px-2"
+                                    >
+                                        <Edit className="h-4 w-4" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Edit expense</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                     </div>
                 </CardDescription>
             </CardContent>

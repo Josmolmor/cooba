@@ -8,18 +8,18 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { ActionState } from '@/lib/auth/middleware'
-import { ExpensePayload, useModal } from '@/context/modal'
+import { ExpensePayload, NewExpensePayload, useModal } from '@/context/modal'
 import ExpenseForm from '@/app/(authed)/events/(interactions)/expenses/expense-form'
 import { editExpense, addExpense } from '@/lib/db/actions/expenses'
 
 export default function ExpenseModalForm({
     initialState,
 }: {
-    initialState?: ExpensePayload
+    initialState?: ExpensePayload | NewExpensePayload
 }) {
     const { isOpen, toggleModal, closeModal } = useModal()
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
-        initialState ? editExpense : addExpense,
+        (initialState as ExpensePayload)?.id ? editExpense : addExpense,
         { payload: initialState, error: '' } ?? { error: '' }
     )
 

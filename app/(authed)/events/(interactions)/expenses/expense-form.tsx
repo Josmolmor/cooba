@@ -7,12 +7,12 @@ import { Loader2 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { useParams } from 'next/navigation'
 import { currencyList } from '@/lib/utils/currency'
-import {
-    FetchEventUsers,
-    getActiveEventUsers,
-} from '@/lib/db/queries/user_events'
-import { useQuery } from '@tanstack/react-query'
 import { useUser } from '@/lib/auth'
+import { ExpensePayload, NewExpensePayload } from '@/context/modal'
+
+const isEditExpense = (
+    value: ExpensePayload | NewExpensePayload
+): value is ExpensePayload | null => false
 
 export default function ExpenseForm({
     formAction,
@@ -22,13 +22,7 @@ export default function ExpenseForm({
 }: {
     formAction: any
     state: {
-        payload?: {
-            amount: number
-            description: string
-            id: number
-            currency: string
-            user_id: number
-        }
+        payload?: ExpensePayload
         error?: string
         success?: boolean
     }
@@ -37,17 +31,6 @@ export default function ExpenseForm({
 }) {
     const { user } = useUser()
     const params = useParams()
-    const {
-        status,
-        data: eventUsers,
-        error,
-        isFetching,
-    } = useQuery({
-        queryKey: ['eventUsers'],
-        queryFn: async (): Promise<FetchEventUsers> => {
-            return getActiveEventUsers(`${params.id}`)
-        },
-    })
 
     return (
         <form action={formAction} className={className}>
@@ -96,26 +79,21 @@ export default function ExpenseForm({
             </div>
             <div className="space-y-2 max-w-full">
                 <Label htmlFor="user_id">Paid by</Label>
-                {user && status === 'success' ? (
-                    <select
-                        name="user_id"
-                        id="user_id"
-                        required
-                        defaultValue={state.payload?.user_id ?? `${user?.id}`}
-                        className="appearance-none flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {eventUsers?.map(({ id, name }) => (
-                            <option key={id} value={id}>
-                                {name}
+                <select
+                    name="user_id"
+                    id="user_id"
+                    required
+                    defaultValue={state.payload?.userId ?? `${user?.id}`}
+                    className="appearance-none flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                    {(state.payload as NewExpensePayload)?.members?.map(
+                        ({ userId, userName }) => (
+                            <option key={userId} value={userId}>
+                                {userName}
                             </option>
-                        ))}
-                    </select>
-                ) : (
-                    <div className="flex items-center gap-1 px-3 p-2 rounded-md bg-background">
-                        <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                        Loading event users
-                    </div>
-                )}
+                        )
+                    )}
+                </select>
             </div>
             <Input
                 type="hidden"
