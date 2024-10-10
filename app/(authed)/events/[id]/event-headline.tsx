@@ -151,7 +151,9 @@ export default function EventHeadline({
                         <div className="flex flex-col gap-2 sm:text-right">
                             <div className="text-sm">Total Expenses</div>
                             <div className="text-2xl font-bold flex gap-2 sm:gap-4 flex-wrap">
-                                {isObjectEmpty(totals)
+                                {isObjectEmpty(totals) ||
+                                Object.entries(totals.totalsWithoutDeleted)
+                                    .length === 0
                                     ? 0
                                     : Object.entries(
                                           totals.totalsWithoutDeleted

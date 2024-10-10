@@ -11,6 +11,7 @@ import { ActionState } from '@/lib/auth/middleware'
 import EventForm from '@/app/(authed)/events/(interactions)/events/event-form'
 import { EventPayload, useModal } from '@/context/modal'
 import { editEvent, addEvent } from '@/lib/db/actions/events'
+import { redirect } from 'next/navigation'
 
 export default function EventModalForm({
     initialState,
@@ -26,6 +27,7 @@ export default function EventModalForm({
     useEffect(() => {
         if (state?.success) {
             closeModal()
+            redirect(`/events/${state.event.id}`)
         }
     }, [state])
 
