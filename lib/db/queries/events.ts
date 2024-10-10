@@ -27,7 +27,13 @@ export async function fetchEvents(): Promise<
         .from(events)
         .innerJoin(user_events, eq(events.id, user_events.eventId))
         .innerJoin(users, eq(events.ownerId, users.id)) // Join users table with events using ownerId
-        .where(and(eq(user_events.userId, user.id), isNull(events.deletedAt)))
+        .where(
+            and(
+                eq(user_events.userId, user.id),
+                isNull(events.deletedAt),
+                isNull(user_events.deletedAt)
+            )
+        )
         .orderBy(desc(events.updatedAt))
 }
 
