@@ -46,6 +46,7 @@ export async function fetchEvent(eventId: string) {
         .select({
             id: events.id,
             title: events.title,
+            description: events.description,
             date: events.date,
             ownerId: events.ownerId,
             creatorName: users.name, // Select the creator's name

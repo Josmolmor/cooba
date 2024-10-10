@@ -92,6 +92,7 @@ export default function ExpenseCard({
     currency,
     userName,
     userId,
+    deletedAt,
     index,
 }: {
     id: Expense['id']
@@ -101,6 +102,7 @@ export default function ExpenseCard({
     currency: Expense['currency']
     userId: Expense['userId']
     userName: string
+    deletedAt: Expense['deletedAt']
 }) {
     const { user } = useUser()
     const isUser = user?.name === userName
@@ -126,7 +128,7 @@ export default function ExpenseCard({
 
     return (
         <Card
-            className={`animate-in duration-700 ${slideInClassnames(index + 1)} fade-in-0`}
+            className={`animate-in duration-700 ${slideInClassnames(index + 1)} fade-in-0 ${deletedAt ? 'opacity-50' : ''}`}
         >
             <CardHeader>
                 <div className="flex justify-between items-center">
@@ -152,9 +154,12 @@ export default function ExpenseCard({
                             {userName ? <span>{userName}</span> : null}
                         </div>
                         <Button
+                            disabled={!!deletedAt}
                             variant="ghost"
                             size="sm"
-                            onClick={handleClickEditButton}
+                            onClick={
+                                deletedAt ? undefined : handleClickEditButton
+                            }
                             className="px-2"
                         >
                             <Edit className="h-4 w-4" />

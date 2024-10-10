@@ -1,6 +1,6 @@
 import { db } from '../drizzle'
 import { Expense, expenses, user_events, users } from '../schema'
-import { and, count, desc, eq, sql, sum } from 'drizzle-orm'
+import { and, count, desc, eq, isNull, sql, sum } from 'drizzle-orm'
 import { getUser } from './users'
 import { unstable_cache } from 'next/cache'
 
@@ -11,6 +11,7 @@ export type FetchExpense = {
     amount: Expense['amount']
     eventId: Expense['eventId']
     userId: Expense['userId']
+    deletedAt: Expense['deletedAt']
 }
 
 export async function fetchExpenses(
@@ -24,6 +25,7 @@ export async function fetchExpenses(
             amount: expenses.amount,
             eventId: expenses.eventId,
             userId: expenses.userId,
+            deletedAt: expenses.deletedAt,
         })
         .from(expenses)
         .where(eq(expenses.eventId, +eventId))
@@ -42,7 +44,12 @@ export const getEventExpenses = unstable_cache(
                 createdAt: expenses.createdAt,
             })
             .from(expenses)
-            .where(sql`${expenses.eventId} = ${eventId}`)
+            .where(
+                and(
+                    sql`${expenses.eventId} = ${eventId}`,
+                    isNull(expenses.deletedAt)
+                )
+            )
 
         const participantCountQuery = db
             .select({
@@ -51,7 +58,12 @@ export const getEventExpenses = unstable_cache(
                 ),
             })
             .from(user_events)
-            .where(sql`${user_events.eventId} = ${eventId}`)
+            .where(
+                and(
+                    sql`${user_events.eventId} = ${eventId}`,
+                    isNull(user_events.deletedAt)
+                )
+            )
 
         const participantsQuery = db
             .select({

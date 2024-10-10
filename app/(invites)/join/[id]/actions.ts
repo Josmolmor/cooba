@@ -3,11 +3,12 @@
 import { verifyInviteId } from '@/lib/utils/crypto'
 import { getUser } from '@/lib/db/queries/users'
 import { db } from '@/lib/db/drizzle'
-import { user_events } from '@/lib/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { expenses, user_events } from '@/lib/db/schema'
+import { and, eq, isNull } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
 import { validatedAction } from '@/lib/auth/middleware'
 import { z } from 'zod'
+import { getAllEventUsers } from '@/lib/db/queries/user_events'
 
 export async function parseInviteUrl(encodedEventId: string) {
     const user = await getUser()
@@ -28,7 +29,8 @@ export async function parseInviteUrl(encodedEventId: string) {
         .where(
             and(
                 eq(user_events.eventId, +decodedEventId),
-                eq(user_events.userId, user.id)
+                eq(user_events.userId, user.id),
+                isNull(user_events.deletedAt)
             )
         )
 
@@ -52,9 +54,43 @@ export const acceptInvite = validatedAction(
 
         const { event_id } = data
 
-        await db.insert(user_events).values({
-            userId: user.id,
-            eventId: event_id,
+        const eventUsers = await getAllEventUsers(event_id)
+
+        // no existing user-event relationship
+        if (!eventUsers.length) {
+            await db.insert(user_events).values({
+                userId: user.id,
+                eventId: event_id,
+            })
+            return redirect(`/events/${event_id}`)
+        }
+
+        // user was already on the event and got removed
+        // Restore user_events entry for the user/event and the expenses associated
+        await db.transaction(async (tx) => {
+            await tx
+                .update(user_events)
+                .set({
+                    deletedAt: null,
+                })
+                .where(
+                    and(
+                        eq(user_events.eventId, +event_id),
+                        eq(user_events.userId, user.id)
+                    )
+                )
+
+            await tx
+                .update(expenses)
+                .set({
+                    deletedAt: null,
+                })
+                .where(
+                    and(
+                        eq(expenses.eventId, +event_id),
+                        eq(expenses.userId, user.id)
+                    )
+                )
         })
 
         redirect(`/events/${event_id}`)

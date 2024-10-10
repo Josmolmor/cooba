@@ -13,18 +13,23 @@ import { EventMembers } from '@/lib/db/queries/users'
 export default function EventHeadline({
     id,
     title,
+    description,
     date,
     ownerName,
     ownerId,
-    totalsByCurrency,
+    totals,
     eventMembers,
 }: {
     id: Event['id']
     title: Event['title']
+    description: Event['description']
     date: Event['date']
     ownerName: string
     ownerId: Event['ownerId']
-    totalsByCurrency: { [key: string]: number }
+    totals: {
+        totalsWithDeleted: [key: string]
+        totalsWithoutDeleted: [key: string]
+    }
     eventMembers: EventMembers[]
 }) {
     const { openModal } = useModal()
@@ -86,29 +91,60 @@ export default function EventHeadline({
                                     <User2 className="mr-1.5" size={12} />
                                     {ownerName}
                                 </span>
+                                <span>{description}</span>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:text-right">
                             <div className="text-sm">Total Expenses</div>
                             <div className="text-2xl font-bold flex gap-2 sm:gap-4 flex-wrap">
-                                {isObjectEmpty(totalsByCurrency)
+                                {isObjectEmpty(totals)
                                     ? 0
-                                    : Object.entries(totalsByCurrency).map(
-                                          ([currency, total]) => (
-                                              <div
-                                                  key={total}
-                                                  className="flex gap-1 items-baseline"
-                                              >
-                                                  <AnimatedCounter
-                                                      targetValue={+total}
-                                                  />
-                                                  <span className="text-muted-foreground text-sm font-normal">
-                                                      {currency}
-                                                  </span>
-                                              </div>
-                                          )
-                                      )}
+                                    : Object.entries(
+                                          totals.totalsWithoutDeleted
+                                      ).map(([currency, total]) => (
+                                          <div
+                                              key={total}
+                                              className="flex gap-1 items-baseline"
+                                          >
+                                              <AnimatedCounter
+                                                  targetValue={+total}
+                                              />
+                                              <span className="text-muted-foreground text-sm font-normal">
+                                                  {currency}
+                                              </span>
+                                          </div>
+                                      ))}
                             </div>
+                            {JSON.stringify(
+                                Object.entries(totals.totalsWithDeleted)
+                            ) !==
+                            JSON.stringify(
+                                Object.entries(totals.totalsWithoutDeleted)
+                            ) ? (
+                                <div>
+                                    <span className="text-xs text-muted-foreground">
+                                        (Including inactive users)
+                                    </span>
+
+                                    <span className="flex gap-2 sm:gap-4 flex-wrap text-2xl font-bold">
+                                        {Object.entries(
+                                            totals.totalsWithDeleted
+                                        ).map(([currency, total]) => (
+                                            <div
+                                                key={total}
+                                                className="flex gap-1 items-baseline"
+                                            >
+                                                <AnimatedCounter
+                                                    targetValue={+total}
+                                                />
+                                                <span className="text-muted-foreground text-sm font-normal">
+                                                    {currency}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </span>
+                                </div>
+                            ) : null}
                         </div>
                     </div>
                 </CardHeader>

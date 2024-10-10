@@ -43,6 +43,7 @@ export type EventMembers = {
     userId: User['id']
     userName: User['name']
     userEmail: User['email']
+    deletedAt: UserEvent['deletedAt']
 }
 
 export async function getAllUsersEventsByEventId(
@@ -54,10 +55,11 @@ export async function getAllUsersEventsByEventId(
             userId: user_events.userId,
             userName: users.name, // Adjust fields as needed
             userEmail: users.email, // Example additional field from the users table
+            deletedAt: user_events.deletedAt,
         })
         .from(user_events)
         .innerJoin(users, eq(user_events.userId, users.id)) // Join user_events with users table
-        .where(eq(user_events.eventId, +id))
+        .where(and(eq(user_events.eventId, +id)))
 
     return usersEventsList ?? []
 }

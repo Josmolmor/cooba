@@ -7,7 +7,10 @@ import { Loader2 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { useParams } from 'next/navigation'
 import { currencyList } from '@/lib/utils/currency'
-import { FetchEventUsers, getEventUsers } from '@/lib/db/queries/user_events'
+import {
+    FetchEventUsers,
+    getActiveEventUsers,
+} from '@/lib/db/queries/user_events'
 import { useQuery } from '@tanstack/react-query'
 import { useUser } from '@/lib/auth'
 
@@ -42,7 +45,7 @@ export default function ExpenseForm({
     } = useQuery({
         queryKey: ['eventUsers'],
         queryFn: async (): Promise<FetchEventUsers> => {
-            return getEventUsers(`${params.id}`)
+            return getActiveEventUsers(`${params.id}`)
         },
     })
 

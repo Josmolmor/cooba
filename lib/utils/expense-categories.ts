@@ -51,6 +51,10 @@ export const categoryKeywords: Record<Category, string[]> = {
         'vegetable',
         'meat',
         'dairy',
+        'pizza',
+        'burger',
+        'pasta',
+        'icecream',
     ],
     transport: [
         'uber',

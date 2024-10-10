@@ -54,8 +54,8 @@ export default async function JoinPage({ params }: { params: { id: string } }) {
                             ? `${event.creatorName} has invited you to join "${event.title}"`
                             : `You have been invited to join "${event.title}`}
                         {event.description ? (
-                            <p className="text-muted-foreground text-sm italic">
-                                {`> ${event.description}`}
+                            <p className="text-muted-foreground text-sm italic ml-1">
+                                {event.description}
                             </p>
                         ) : null}
                     </CardDescription>

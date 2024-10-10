@@ -1,12 +1,14 @@
 'use server'
 
 import { db } from '@/lib/db/drizzle'
+import { getUser } from '@/lib/db/queries/users'
 import { user_events, expenses } from '@/lib/db/schema'
 import { and, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function removeEventMember(eventId: number, userId: number) {
+    const user = await getUser()
     await db.transaction(async (tx) => {
         await tx
             .update(user_events)
@@ -31,7 +33,11 @@ export async function removeEventMember(eventId: number, userId: number) {
             )
     })
 
+    if (user?.id !== userId) {
+        revalidatePath(`/events`)
+        return redirect('/events')
+    }
+
     // Revalidate the event page to reflect the changes
-    revalidatePath(`/events`)
-    redirect('/events')
+    revalidatePath(`/events/${eventId}`)
 }
