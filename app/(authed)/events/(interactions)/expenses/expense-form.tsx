@@ -88,7 +88,7 @@ export default function ExpenseForm({
                 >
                     {(state.payload as NewExpensePayload)?.members?.map(
                         ({ userId, userName }) => (
-                            <option key={userId} value={userId}>
+                            <option key={userId} value={userId?.toString()}>
                                 {userName}
                             </option>
                         )
