@@ -70,10 +70,10 @@ export default function EventHeadline({
                 <Button variant="link" asChild className="group">
                     <Link href="/events" className="flex items-center">
                         <ArrowLeft className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
-                        All events
+                        <span>All events</span>
                     </Link>
                 </Button>
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex gap-4 flex-wrap w-full sm:flex-nowrap sm:w-auto">
                     <Button
                         onClick={handleClickEditButton}
                         className="sm:w-auto"
@@ -83,7 +83,11 @@ export default function EventHeadline({
                             Edit event
                         </>
                     </Button>
-                    <Button variant="secondary" onClick={displayEventMembers}>
+                    <Button
+                        variant="secondary"
+                        onClick={displayEventMembers}
+                        className="w-full sm:w-auto"
+                    >
                         <Users className="mr-2 h-4 w-4" />
                         View members
                     </Button>
